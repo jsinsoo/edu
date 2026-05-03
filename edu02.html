@@ -1306,8 +1306,7 @@ function grade(){let correct=0, lines=[];QUESTIONS.forEach((it,i)=>{let sel=docu
 응시시각: ${stamp}
 
 [문항별 결과]
-${lines.join('
-')}`;document.getElementById('result').style.display='block';document.getElementById('result').innerHTML=`점수: ${score}점 · 정답 ${correct}/${QUESTIONS.length} · 응시시각: ${stamp}`;let blob=new Blob([text],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${safeFile(sid)}_${safeFile(name)}_${score}점_${fileStamp}.txt`;document.body.appendChild(a);a.click();a.remove();}
+${lines.join('\n')}`;document.getElementById('result').style.display='block';document.getElementById('result').innerHTML=`점수: ${score}점 · 정답 ${correct}/${QUESTIONS.length} · 응시시각: ${stamp}`;let blob=new Blob([text],{type:'text/plain;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${safeFile(sid)}_${safeFile(name)}_${score}점_${fileStamp}.txt`;document.body.appendChild(a);a.click();a.remove();}
 function resetQuiz(){document.querySelectorAll('input[type=radio]').forEach(x=>x.checked=false);document.querySelectorAll('.feedback').forEach(x=>x.textContent='');document.getElementById('result').style.display='none';}
 render();
 </script></body></html>
