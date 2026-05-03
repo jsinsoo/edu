@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>김신우 선생님의 학교폭력예방법 조문별 해설과 심화평가</title>
+<style>
+body{margin:0;font-family:'Malgun Gothic',Arial,sans-serif;background:#eef4ff;color:#10203a;line-height:1.7}
+header{background:linear-gradient(135deg,#123c8c,#2563eb);color:white;padding:40px}
+.wrap{max-width:1200px;margin:auto;padding:24px}
+.card{background:white;border-radius:24px;padding:24px;margin:22px 0;box-shadow:0 8px 26px #c7d6f5}
+h1{margin:0} h2{border-bottom:3px solid #e3ecff;padding-bottom:10px}
+.law{background:#f7fbff;border-left:6px solid #2563eb;padding:15px;border-radius:12px;font-weight:bold}
+.q{background:#fbfdff;border:1px solid #dbe7ff;border-radius:14px;padding:14px;margin:12px 0}
+.ans{color:#0b7a45;font-weight:900}
+label{display:block;background:#f5f8ff;border:1px solid #d9e4f7;border-radius:10px;padding:8px;margin:6px 0}
+input[type=text]{padding:12px;border-radius:10px;border:1px solid #b9c8df;width:260px}
+button{background:#17439b;color:white;border:0;border-radius:12px;padding:12px 18px;font-weight:900;cursor:pointer}
+.score{font-size:22px;font-weight:900;color:#17439b}
+</style>
+</head>
+<body>
+<header>
+<h1>김신우 선생님의 학교폭력예방 및 대책에 관한 법률 조문별 해설 + 심화평가</h1>
+<p>각 조문별 핵심 내용, 해설, 서로 다른 OX 2문항, 5지선다형 2문항, 상세 해설, 자동 채점, TXT 저장 기능 포함</p>
+</header>
+
+<div class="wrap">
+<div class="card">
+<h2>응시 정보</h2>
+학번 <input id="sid" type="text" placeholder="예: 10101">
+이름 <input id="sname" type="text" placeholder="예: 홍길동">
+<button onclick="grade()">채점 및 TXT 저장</button>
+<button onclick="location.reload()">다시 풀기</button>
+<div id="score" class="score"></div>
+</div>
+
+<div id="content"></div>
+</div>
+
+<script>
+const articles=[
+["제1조","목적","학교폭력의 예방과 대책에 필요한 사항을 정하여 피해학생 보호, 가해학생 선도·교육, 분쟁조정을 통해 학생 인권 보호와 건전한 사회구성원 육성을 목적으로 한다.","이 조문은 법 전체의 방향을 제시한다. 학교폭력 사안 처리는 처벌만이 아니라 피해 회복, 관계 회복, 재발 방지, 교육적 선도를 함께 고려해야 한다."],
+["제2조","정의","학교폭력, 따돌림, 사이버폭력, 피해학생, 가해학생 등의 기본 개념을 정한다.","정의 조항은 학교폭력 사안 판단의 출발점이다. 특정 행위가 법 적용 대상인지 판단하려면 먼저 제2조의 정의에 해당하는지 검토해야 한다."],
+["제3조","해석·적용의 주의의무","법을 해석하고 적용할 때 학생의 인권과 교육적 목적을 고려해야 한다.","학교폭력 대응은 형식적 절차만으로 충분하지 않다. 학생 보호, 교육적 회복, 인권 보장이 함께 고려되어야 한다."],
+["제4조","국가 및 지방자치단체의 책무","국가와 지방자치단체는 학교폭력 예방과 근절을 위한 제도와 시책을 마련해야 한다.","학교폭력 예방은 학교만의 책임이 아니라 국가와 지자체의 공적 책무이다."],
+["제5조","다른 법률과의 관계","학교폭력 관련 사항은 다른 법률에 특별한 규정이 없으면 이 법에 따른다.","학교폭력 사안은 형법, 아동복지법 등 다른 법률과도 관련될 수 있으므로 법률 간 관계를 이해해야 한다."],
+["제6조","기본계획의 수립 등","정부는 학교폭력 예방 및 대책에 관한 기본계획을 수립·시행해야 한다.","학교폭력 대응은 단발성 조치가 아니라 국가 차원의 계획과 정책으로 운영된다."],
+["제7조","학교폭력대책위원회","학교폭력 예방과 대책에 관한 주요 사항을 심의하기 위한 위원회에 관한 조항이다.","위원회는 정책 방향과 제도 개선을 논의하는 기구로서 학교폭력 대응 체계의 중심 역할을 한다."],
+["제8조","전문상담교사 등의 배치 및 전담기구","학교에는 학교폭력 예방과 상담을 위한 전문 인력과 전담기구가 필요하다.","전담기구는 초기 조사, 상담, 사안 파악 등 학교 현장의 실무 대응에서 중요한 역할을 한다."],
+["제9조","실태조사","교육부장관과 교육감은 학교폭력 실태조사를 실시할 수 있다.","실태조사는 학교폭력의 발생 양상과 예방 정책 수립에 필요한 근거 자료를 제공한다."],
+["제10조","연구·교육기관의 설치","학교폭력 예방과 대책 연구 및 교육을 위한 기관 설치 근거를 둔다.","전문 연구와 교육은 학교폭력 대응의 질을 높이고 현장 지원 체계를 강화한다."],
+["제11조","교육감의 임무","교육감은 학교폭력 예방교육, 상담, 피해학생 보호, 가해학생 선도 등을 지원해야 한다.","교육청은 학교폭력 대응에서 학교를 지도·지원하는 핵심 기관이다."],
+["제12조","학교폭력대책심의위원회","교육지원청에 학교폭력대책심의위원회를 두어 학교폭력 사안을 심의한다.","심의위원회는 학교폭력 여부, 피해학생 보호조치, 가해학생 조치 등을 심의하는 중요한 절차적 기구이다."],
+["제13조","심의위원회의 구성·운영","심의위원회 구성과 운영에 관한 기본 사항을 정한다.","위원 구성의 전문성과 공정성은 학교폭력 사안 처리의 신뢰성을 좌우한다."],
+["제14조","전문상담교사 배치 및 전담기구 구성","학교의 장은 학교폭력 문제를 담당하는 전담기구를 구성할 수 있다.","학교 내부에서 신속하고 체계적인 초기 대응이 가능하도록 하는 조항이다."],
+["제15조","학교폭력 예방교육 등","학교의 장은 학생, 교직원, 학부모 대상 학교폭력 예방교육을 학기별 1회 이상 실시해야 한다.","예방교육은 학교폭력의 개념, 실태, 대처방안을 알게 하여 사전 예방 효과를 높인다."],
+["제16조","피해학생의 보호","피해학생에게 심리상담, 일시보호, 치료, 학급교체 등 필요한 보호조치를 할 수 있다.","피해학생 보호는 학교폭력 처리의 최우선 원칙이다. 피해 회복과 안전 확보가 중심이 된다."],
+["제16조의2","장애학생의 보호","장애학생이 피해학생인 경우 장애 특성을 고려하여 보호해야 한다.","장애학생은 의사표현, 이동, 방어 능력 등에서 취약할 수 있으므로 더 세심한 보호가 필요하다."],
+["제17조","가해학생에 대한 조치","가해학생에게 서면사과, 접촉 금지, 봉사, 특별교육, 출석정지, 학급교체, 전학 등 조치를 할 수 있다.","가해학생 조치는 단순 처벌이 아니라 반성, 재발 방지, 교육적 선도를 목적으로 한다."],
+["제17조의2","재심청구","피해학생 또는 가해학생 측은 일정한 경우 조치에 대해 재심을 청구할 수 있다.","재심 제도는 사안 처리의 공정성과 권리 구제를 보장하기 위한 장치이다."],
+["제18조","분쟁조정","피해학생과 가해학생 사이 또는 보호자 사이의 분쟁을 조정할 수 있다.","분쟁조정은 손해배상, 사과, 관계 회복 등 사후 갈등 해결을 지원하는 절차이다."],
+["제19조","학교의 장의 의무","학교의 장은 학교폭력 예방과 사안 처리에 필요한 조치를 해야 한다.","학교장은 학교폭력 대응의 현장 책임자로서 예방교육, 조사, 보호, 보고 등의 역할을 수행한다."],
+["제20조","학교폭력의 신고의무","학교폭력 현장을 보거나 사실을 알게 된 사람은 학교 등 관계 기관에 즉시 신고해야 한다.","신고의무는 은폐를 막고 피해학생 보호를 빠르게 시작하기 위한 핵심 장치이다."],
+["제20조의2","긴급전화의 설치 등","학교폭력 신고와 상담을 위한 긴급전화 설치·운영 근거를 둔다.","긴급 신고 체계는 학생이 위기 상황에서 즉시 도움을 요청할 수 있게 한다."],
+["제20조의3","정보통신망에 의한 학교폭력","정보통신망을 이용한 학교폭력 예방과 대응에 관한 사항을 다룬다.","사이버폭력은 시간과 공간의 제한이 적고 확산성이 커 별도의 주의가 필요하다."],
+["제20조의4","학교폭력 정보 등의 관리","학교폭력 관련 정보 관리와 자료 처리에 관한 사항을 정한다.","사안 정보는 민감하므로 보호와 활용의 균형이 필요하다."],
+["제21조","비밀누설금지 등","학교폭력 사안 처리 관계자는 직무상 알게 된 비밀을 누설해서는 안 된다.","피해학생과 가해학생의 개인정보와 사생활 보호를 위해 매우 중요한 조항이다."],
+["제22조","벌칙","비밀누설 등 법 위반 행위에 대한 벌칙을 정한다.","벌칙 조항은 법의 실효성을 확보하고 학교폭력 사안 처리의 책임성을 강화한다."]
+];
+
+function ox(article,i){
+return [
+{t:`${article[0]} ${article[1]}은 학교폭력 대응에서 법적 기준과 교육적 목적을 함께 고려하도록 하는 조문이다.`,a:"O",e:"학교폭력예방법은 피해학생 보호, 가해학생 선도, 재발 방지, 인권 보호를 함께 목적으로 한다."},
+{t:`${article[0]} ${article[1]}은 학교가 사안을 알게 되어도 보호자 통보나 관련 절차 없이 임의로 종결해도 된다는 의미이다.`,a:"X",e:"학교폭력 사안은 법령상 절차, 보호조치, 심의, 통보, 기록 관리 등을 고려해야 한다."}
+][i];
+}
+function mc(article,i){
+if(i===0)return {
+t:`${article[0]} ${article[1]}의 핵심 취지로 가장 적절한 것은?`,
+c:["① 학교폭력 사안을 학교가 임의로 은폐할 수 있게 한다.","② 피해학생 보호와 가해학생 선도·교육 등 법적 대응 기준을 세운다.","③ 모든 사안을 형사처벌로만 해결하도록 한다.","④ 피해학생의 의사를 항상 배제한다.","⑤ 사이버폭력은 학교폭력에서 제외한다."],
+a:1,e:"학교폭력예방법은 피해학생 보호, 가해학생 선도·교육, 분쟁조정, 예방체계 마련을 중시한다."
+};
+return {
+t:`${article[0]} ${article[1]}을 학교 현장에 적용할 때 가장 바람직한 태도는?`,
+c:["① 조문 제목만 보고 판단한다.","② 학생 안전, 절차적 공정성, 보호자 통보, 관련 기관 협조를 함께 검토한다.","③ 피해학생 보호보다 학교 이미지 관리를 우선한다.","④ 사안 기록과 비밀보호를 모두 무시한다.","⑤ 가해학생 조치는 교육적 목적과 무관하다."],
+a:1,e:"학교폭력 사안은 학생 보호와 교육적 선도, 절차적 공정성, 비밀보호를 함께 고려해야 한다."
+};
+}
+
+let qlist=[];
+const content=document.getElementById("content");
+
+articles.forEach((a,idx)=>{
+let html=`<section class="card"><h2>${a[0]} ${a[1]}</h2>
+<h3>조문 핵심 내용</h3><p class="law">${a[2]}</p>
+<h3>조문 해설</h3><p>${a[3]}</p>
+<h3>조문별 심화 OX퀴즈 2문항</h3>`;
+for(let i=0;i<2;i++){
+let q=ox(a,i); q.type="ox"; qlist.push(q); let n=qlist.length-1;
+html+=`<div class="q"><b>OX ${i+1}.</b> ${q.t}
+<label><input type="radio" name="q${n}" value="O"> O</label>
+<label><input type="radio" name="q${n}" value="X"> X</label>
+<p><span class="ans">정답 ${q.a}</span> ${q.e}</p></div>`;
+}
+html+=`<h3>조문별 5지선다형 2문항</h3>`;
+for(let i=0;i<2;i++){
+let q=mc(a,i); q.type="mc"; qlist.push(q); let n=qlist.length-1;
+html+=`<div class="q"><b>5지선다 ${i+1}.</b> ${q.t}`;
+q.c.forEach((ch,j)=>html+=`<label><input type="radio" name="q${n}" value="${j}"> ${ch}</label>`);
+html+=`<p><span class="ans">정답 ${q.a+1}번</span> ${q.e}</p></div>`;
+}
+html+=`</section>`;
+content.insertAdjacentHTML("beforeend",html);
+});
+
+function grade(){
+let correct=0, total=qlist.length, lines=[];
+qlist.forEach((q,i)=>{
+let checked=document.querySelector(`input[name=q${i}]:checked`);
+let val=checked?checked.value:"미응답";
+let ok=String(val)===String(q.a);
+if(ok)correct++;
+lines.push(`${i+1}번 | 내 답: ${val} | 정답: ${q.a} | ${ok?"O":"X"} | ${q.t}`);
+});
+let score=Math.round(correct/total*100);
+document.getElementById("score").innerHTML=`점수: ${score}점 / 정답 ${correct}개 / 총 ${total}문항`;
+
+let sid=document.getElementById("sid").value.trim()||"학번";
+let name=document.getElementById("sname").value.trim()||"이름";
+let now=new Date();
+let stamp=now.toLocaleString("ko-KR");
+let safe=now.toISOString().replaceAll(":","-").slice(0,19);
+let txt=`학교폭력예방 및 대책에 관한 법률 평가 결과
+학번: ${sid}
+이름: ${name}
+점수: ${score}
+정답수: ${correct}/${total}
+응시시각: ${stamp}
+
+[문항별 결과]
+${lines.join("\n")}
+`;
+let blob=new Blob([txt],{type:"text/plain;charset=utf-8"});
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download=`${sid}_${name}_학교폭력_${score}점_${safe}.txt`;
+a.click();
+}
+</script>
+</body>
+</html>
