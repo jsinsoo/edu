@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>표준입출력 포함 파이썬 문법 예제 60개</title>
+<style>
+body{
+    margin:0;
+    font-family:'Malgun Gothic','맑은 고딕',sans-serif;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+    color:#1f2937;
+}
+.container{
+    max-width:1250px;
+    margin:0 auto;
+    padding:34px;
+}
+header{
+    background:linear-gradient(135deg,#1e3a8a,#2563eb,#38bdf8);
+    color:white;
+    padding:38px;
+    border-radius:24px;
+    box-shadow:0 14px 30px rgba(30,58,138,.25);
+    margin-bottom:28px;
+}
+h1{margin:0;font-size:34px;text-align:center;}
+.subtitle{text-align:center;margin-top:12px;font-size:17px;opacity:.95;}
+.notice{
+    margin-top:20px;
+    background:rgba(255,255,255,.18);
+    padding:14px 18px;
+    border-radius:16px;
+    line-height:1.8;
+}
+.toc{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin:26px 0;
+}
+.toc a{
+    text-decoration:none;
+    background:white;
+    color:#1e40af;
+    padding:14px;
+    border-radius:14px;
+    font-weight:700;
+    box-shadow:0 8px 18px rgba(15,23,42,.08);
+    text-align:center;
+}
+section{
+    background:white;
+    margin:30px 0;
+    padding:26px;
+    border-radius:24px;
+    box-shadow:0 10px 25px rgba(15,23,42,.08);
+}
+h2{
+    color:#1d4ed8;
+    border-left:8px solid #38bdf8;
+    padding-left:14px;
+    font-size:27px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(470px,1fr));
+    gap:20px;
+}
+.card{
+    background:#f8fafc;
+    border:1px solid #dbeafe;
+    border-radius:18px;
+    padding:18px;
+}
+.card h3{
+    margin:0 0 12px 0;
+    color:#0f172a;
+}
+.badge{
+    display:inline-block;
+    background:#dbeafe;
+    color:#1e40af;
+    border-radius:999px;
+    padding:5px 10px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+pre{
+    margin:0;
+    background:#0f172a;
+    color:#e5e7eb;
+    padding:18px;
+    border-radius:14px;
+    overflow:auto;
+    white-space:pre-wrap;
+    line-height:1.55;
+    font-size:14.5px;
+}
+code{font-family:'Consolas','D2Coding',monospace;}
+.footer{
+    text-align:center;
+    color:#475569;
+    padding:30px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>🐍 표준입출력 포함 파이썬 문법 예제 60개</h1>
+<div class="subtitle">조건문 · 조건문 OOP · 반복문 · 반복문 OOP · map/zip · map/zip OOP</div>
+<div class="notice">
+✅ 모든 예제는 서로 다른 상황으로 구성했습니다.<br>
+✅ 각 코드에는 반드시 <b>input()</b>과 <b>print()</b> 표준입출력문이 포함되어 있습니다.<br>
+✅ 수업자료, 수행평가 예시, 코드 읽기 활동에 바로 사용할 수 있습니다.
+</div>
+</header>
+<div class="toc">
+<a href="#sec1">1. 조건문 예제</a>
+<a href="#sec2">2. 조건문 OOP 예제</a>
+<a href="#sec3">3. 반복문 예제</a>
+<a href="#sec4">4. 반복문 OOP 예제</a>
+<a href="#sec5">5. map, zip 예제</a>
+<a href="#sec6">6. map, zip OOP 예제</a>
+</div>
+<section id="sec1"><h2>1. 조건문 예제 10개</h2><div class="grid">
+<div class="card">
+<span class="badge">예제 1-1</span>
+<h3>성적 등급 판정</h3>
+<pre><code>score = int(input(&quot;점수 입력: &quot;))
+
+if score &gt;= 90:
+    grade = &quot;A&quot;
+elif score &gt;= 80:
+    grade = &quot;B&quot;
+elif score &gt;= 70:
+    grade = &quot;C&quot;
+else:
+    grade = &quot;D&quot;
+
+print(&quot;입력 점수:&quot;, score)
+print(&quot;등급:&quot;, grade)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-2</span>
+<h3>짝수/홀수 판별</h3>
+<pre><code>n = int(input(&quot;정수 입력: &quot;))
+
+if n % 2 == 0:
+    print(n, &quot;은/는 짝수입니다.&quot;)
+else:
+    print(n, &quot;은/는 홀수입니다.&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-3</span>
+<h3>영화 관람 요금</h3>
+<pre><code>age = int(input(&quot;나이 입력: &quot;))
+
+if age &lt; 8:
+    fee = 0
+elif age &lt; 19:
+    fee = 8000
+elif age &lt; 65:
+    fee = 12000
+else:
+    fee = 6000
+
+print(&quot;나이:&quot;, age)
+print(&quot;요금:&quot;, fee, &quot;원&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-4</span>
+<h3>로그인 확인</h3>
+<pre><code>user_id = input(&quot;아이디 입력: &quot;)
+password = input(&quot;비밀번호 입력: &quot;)
+
+if user_id == &quot;admin&quot; and password == &quot;1234&quot;:
+    print(&quot;로그인 성공&quot;)
+else:
+    print(&quot;로그인 실패&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-5</span>
+<h3>배송비 계산</h3>
+<pre><code>price = int(input(&quot;구매 금액 입력: &quot;))
+
+if price &gt;= 50000:
+    delivery = 0
+else:
+    delivery = 3000
+
+print(&quot;구매 금액:&quot;, price)
+print(&quot;배송비:&quot;, delivery)
+print(&quot;총 결제 금액:&quot;, price + delivery)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-6</span>
+<h3>계절 판정</h3>
+<pre><code>month = int(input(&quot;월 입력: &quot;))
+
+if month in [3, 4, 5]:
+    season = &quot;봄&quot;
+elif month in [6, 7, 8]:
+    season = &quot;여름&quot;
+elif month in [9, 10, 11]:
+    season = &quot;가을&quot;
+elif month in [12, 1, 2]:
+    season = &quot;겨울&quot;
+else:
+    season = &quot;잘못된 월&quot;
+
+print(&quot;판정 결과:&quot;, season)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-7</span>
+<h3>비밀번호 강도</h3>
+<pre><code>pw = input(&quot;비밀번호 입력: &quot;)
+
+if len(pw) &gt;= 8 and any(c.isdigit() for c in pw):
+    print(&quot;강한 비밀번호&quot;)
+elif len(pw) &gt;= 6:
+    print(&quot;보통 비밀번호&quot;)
+else:
+    print(&quot;약한 비밀번호&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-8</span>
+<h3>삼각형 가능 여부</h3>
+<pre><code>a = int(input(&quot;첫 번째 변: &quot;))
+b = int(input(&quot;두 번째 변: &quot;))
+c = int(input(&quot;세 번째 변: &quot;))
+
+if a + b &gt; c and a + c &gt; b and b + c &gt; a:
+    print(&quot;삼각형을 만들 수 있습니다.&quot;)
+else:
+    print(&quot;삼각형을 만들 수 없습니다.&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-9</span>
+<h3>최댓값 구하기</h3>
+<pre><code>a = int(input(&quot;첫 번째 수: &quot;))
+b = int(input(&quot;두 번째 수: &quot;))
+c = int(input(&quot;세 번째 수: &quot;))
+
+if a &gt;= b and a &gt;= c:
+    m = a
+elif b &gt;= a and b &gt;= c:
+    m = b
+else:
+    m = c
+
+print(&quot;최댓값:&quot;, m)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 1-10</span>
+<h3>출석 상태 판정</h3>
+<pre><code>rate = float(input(&quot;출석률 입력(%): &quot;))
+
+if rate &gt;= 90:
+    print(&quot;우수&quot;)
+elif rate &gt;= 75:
+    print(&quot;보통&quot;)
+else:
+    print(&quot;주의 필요&quot;)</code></pre>
+</div>
+</div></section>
+<section id="sec2"><h2>2. 조건문 OOP 예제 10개</h2><div class="grid">
+<div class="card">
+<span class="badge">예제 2-1</span>
+<h3>학생 등급 클래스</h3>
+<pre><code>class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+    def grade(self):
+        if self.score &gt;= 90:
+            return &quot;A&quot;
+        elif self.score &gt;= 80:
+            return &quot;B&quot;
+        return &quot;C&quot;
+
+name = input(&quot;이름 입력: &quot;)
+score = int(input(&quot;점수 입력: &quot;))
+s = Student(name, score)
+print(s.name, &quot;등급:&quot;, s.grade())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-2</span>
+<h3>은행 출금 클래스</h3>
+<pre><code>class Account:
+    def __init__(self, balance):
+        self.balance = balance
+
+    def withdraw(self, amount):
+        if self.balance &gt;= amount:
+            self.balance -= amount
+            print(&quot;출금 성공&quot;)
+        else:
+            print(&quot;잔액 부족&quot;)
+        print(&quot;현재 잔액:&quot;, self.balance)
+
+balance = int(input(&quot;잔액 입력: &quot;))
+amount = int(input(&quot;출금액 입력: &quot;))
+Account(balance).withdraw(amount)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-3</span>
+<h3>회원 등급 클래스</h3>
+<pre><code>class Member:
+    def __init__(self, point):
+        self.point = point
+
+    def level(self):
+        if self.point &gt;= 1000:
+            return &quot;VIP&quot;
+        elif self.point &gt;= 500:
+            return &quot;Gold&quot;
+        return &quot;Basic&quot;
+
+point = int(input(&quot;포인트 입력: &quot;))
+m = Member(point)
+print(&quot;회원 등급:&quot;, m.level())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-4</span>
+<h3>온도 상태 클래스</h3>
+<pre><code>class Temperature:
+    def __init__(self, celsius):
+        self.celsius = celsius
+
+    def status(self):
+        if self.celsius &gt;= 30:
+            return &quot;더움&quot;
+        elif self.celsius &lt;= 5:
+            return &quot;추움&quot;
+        return &quot;쾌적&quot;
+
+t = float(input(&quot;온도 입력: &quot;))
+print(&quot;날씨 상태:&quot;, Temperature(t).status())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-5</span>
+<h3>주문 할인 클래스</h3>
+<pre><code>class Order:
+    def __init__(self, total):
+        self.total = total
+
+    def pay(self):
+        if self.total &gt;= 100000:
+            discount = 10000
+        elif self.total &gt;= 50000:
+            discount = 5000
+        else:
+            discount = 0
+        return self.total - discount
+
+total = int(input(&quot;주문 금액 입력: &quot;))
+o = Order(total)
+print(&quot;최종 결제 금액:&quot;, o.pay())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-6</span>
+<h3>게임 캐릭터 체력</h3>
+<pre><code>class Character:
+    def __init__(self, hp):
+        self.hp = hp
+
+    def check(self):
+        if self.hp &gt; 70:
+            return &quot;정상&quot;
+        elif self.hp &gt; 0:
+            return &quot;위험&quot;
+        return &quot;게임 오버&quot;
+
+hp = int(input(&quot;체력 입력: &quot;))
+print(&quot;상태:&quot;, Character(hp).check())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-7</span>
+<h3>계산기 나눗셈 클래스</h3>
+<pre><code>class Divider:
+    def divide(self, a, b):
+        if b == 0:
+            return &quot;0으로 나눌 수 없습니다.&quot;
+        return a / b
+
+a = float(input(&quot;첫 번째 수: &quot;))
+b = float(input(&quot;두 번째 수: &quot;))
+print(&quot;결과:&quot;, Divider().divide(a, b))</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-8</span>
+<h3>도서 대출 클래스</h3>
+<pre><code>class LibraryUser:
+    def __init__(self, borrowed):
+        self.borrowed = borrowed
+
+    def can_borrow(self):
+        if self.borrowed &lt; 5:
+            return &quot;대출 가능&quot;
+        return &quot;대출 불가&quot;
+
+borrowed = int(input(&quot;현재 대출 권수: &quot;))
+print(LibraryUser(borrowed).can_borrow())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-9</span>
+<h3>교통카드 클래스</h3>
+<pre><code>class Card:
+    def __init__(self, money):
+        self.money = money
+
+    def ride(self):
+        if self.money &gt;= 1450:
+            self.money -= 1450
+            print(&quot;탑승 가능&quot;)
+        else:
+            print(&quot;잔액 부족&quot;)
+        print(&quot;남은 금액:&quot;, self.money)
+
+money = int(input(&quot;카드 잔액 입력: &quot;))
+Card(money).ride()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 2-10</span>
+<h3>파일 확장자 판정 클래스</h3>
+<pre><code>class FileChecker:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def kind(self):
+        if self.filename.endswith(&quot;.py&quot;):
+            return &quot;파이썬 파일&quot;
+        elif self.filename.endswith(&quot;.html&quot;):
+            return &quot;HTML 파일&quot;
+        return &quot;기타 파일&quot;
+
+filename = input(&quot;파일명 입력: &quot;)
+print(FileChecker(filename).kind())</code></pre>
+</div>
+</div></section>
+<section id="sec3"><h2>3. 반복문 예제 10개</h2><div class="grid">
+<div class="card">
+<span class="badge">예제 3-1</span>
+<h3>1부터 n까지 출력</h3>
+<pre><code>n = int(input(&quot;n 입력: &quot;))
+
+for i in range(1, n + 1):
+    print(i)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-2</span>
+<h3>합계 구하기</h3>
+<pre><code>n = int(input(&quot;n 입력: &quot;))
+total = 0
+
+for i in range(1, n + 1):
+    total += i
+
+print(&quot;1부터&quot;, n, &quot;까지의 합:&quot;, total)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-3</span>
+<h3>구구단 출력</h3>
+<pre><code>dan = int(input(&quot;단 입력: &quot;))
+
+for i in range(1, 10):
+    print(dan, &quot;x&quot;, i, &quot;=&quot;, dan * i)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-4</span>
+<h3>입력한 단어 반복 출력</h3>
+<pre><code>word = input(&quot;단어 입력: &quot;)
+count = int(input(&quot;반복 횟수 입력: &quot;))
+
+for i in range(count):
+    print(i + 1, word)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-5</span>
+<h3>숫자 리스트 평균</h3>
+<pre><code>nums = list(map(int, input(&quot;숫자 여러 개 입력: &quot;).split()))
+total = 0
+
+for n in nums:
+    total += n
+
+print(&quot;평균:&quot;, total / len(nums))</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-6</span>
+<h3>문자 개수 세기</h3>
+<pre><code>text = input(&quot;문장 입력: &quot;)
+target = input(&quot;찾을 문자 입력: &quot;)
+count = 0
+
+for ch in text:
+    if ch == target:
+        count += 1
+
+print(target, &quot;개수:&quot;, count)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-7</span>
+<h3>while 비밀번호 확인</h3>
+<pre><code>correct = &quot;python&quot;
+pw = &quot;&quot;
+
+while pw != correct:
+    pw = input(&quot;비밀번호 입력: &quot;)
+
+print(&quot;접속 성공&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-8</span>
+<h3>약수 출력</h3>
+<pre><code>n = int(input(&quot;정수 입력: &quot;))
+
+for i in range(1, n + 1):
+    if n % i == 0:
+        print(i)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-9</span>
+<h3>별 삼각형</h3>
+<pre><code>n = int(input(&quot;높이 입력: &quot;))
+
+for i in range(1, n + 1):
+    print(&quot;*&quot; * i)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 3-10</span>
+<h3>입력값 누적</h3>
+<pre><code>total = 0
+
+while True:
+    n = int(input(&quot;숫자 입력(0 입력 시 종료): &quot;))
+    if n == 0:
+        break
+    total += n
+
+print(&quot;누적 합:&quot;, total)</code></pre>
+</div>
+</div></section>
+<section id="sec4"><h2>4. 반복문 OOP 예제 10개</h2><div class="grid">
+<div class="card">
+<span class="badge">예제 4-1</span>
+<h3>숫자 출력기</h3>
+<pre><code>class NumberPrinter:
+    def __init__(self, n):
+        self.n = n
+
+    def show(self):
+        for i in range(1, self.n + 1):
+            print(i)
+
+n = int(input(&quot;n 입력: &quot;))
+NumberPrinter(n).show()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-2</span>
+<h3>합계 계산기</h3>
+<pre><code>class SumCalculator:
+    def total(self, n):
+        s = 0
+        for i in range(1, n + 1):
+            s += i
+        return s
+
+n = int(input(&quot;n 입력: &quot;))
+print(&quot;합계:&quot;, SumCalculator().total(n))</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-3</span>
+<h3>구구단 클래스</h3>
+<pre><code>class Gugudan:
+    def __init__(self, dan):
+        self.dan = dan
+
+    def print_table(self):
+        for i in range(1, 10):
+            print(f&quot;{self.dan} x {i} = {self.dan * i}&quot;)
+
+dan = int(input(&quot;단 입력: &quot;))
+Gugudan(dan).print_table()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-4</span>
+<h3>장바구니 합계</h3>
+<pre><code>class Cart:
+    def __init__(self, prices):
+        self.prices = prices
+
+    def total(self):
+        result = 0
+        for p in self.prices:
+            result += p
+        return result
+
+prices = list(map(int, input(&quot;가격들 입력: &quot;).split()))
+print(&quot;총합:&quot;, Cart(prices).total())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-5</span>
+<h3>학생 명단 출력</h3>
+<pre><code>class Classroom:
+    def __init__(self, names):
+        self.names = names
+
+    def attendance(self):
+        for i, name in enumerate(self.names, 1):
+            print(i, name, &quot;출석&quot;)
+
+names = input(&quot;학생 이름들 입력: &quot;).split()
+Classroom(names).attendance()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-6</span>
+<h3>타이머 클래스</h3>
+<pre><code>class Timer:
+    def countdown(self, n):
+        while n &gt; 0:
+            print(n)
+            n -= 1
+        print(&quot;시작!&quot;)
+
+n = int(input(&quot;카운트다운 숫자: &quot;))
+Timer().countdown(n)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-7</span>
+<h3>단어 분석 클래스</h3>
+<pre><code>class WordAnalyzer:
+    def __init__(self, word):
+        self.word = word
+
+    def spell(self):
+        for ch in self.word:
+            print(ch)
+
+word = input(&quot;단어 입력: &quot;)
+WordAnalyzer(word).spell()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-8</span>
+<h3>성적 목록 판정</h3>
+<pre><code>class ScoreList:
+    def __init__(self, scores):
+        self.scores = scores
+
+    def pass_list(self):
+        for score in self.scores:
+            if score &gt;= 60:
+                print(score, &quot;합격&quot;)
+            else:
+                print(score, &quot;불합격&quot;)
+
+scores = list(map(int, input(&quot;점수들 입력: &quot;).split()))
+ScoreList(scores).pass_list()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-9</span>
+<h3>반복 인사 클래스</h3>
+<pre><code>class Greeter:
+    def __init__(self, name, count):
+        self.name = name
+        self.count = count
+
+    def greet(self):
+        for _ in range(self.count):
+            print(self.name + &quot;님 안녕하세요!&quot;)
+
+name = input(&quot;이름 입력: &quot;)
+count = int(input(&quot;횟수 입력: &quot;))
+Greeter(name, count).greet()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 4-10</span>
+<h3>약수 탐색 클래스</h3>
+<pre><code>class DivisorFinder:
+    def __init__(self, n):
+        self.n = n
+
+    def show(self):
+        for i in range(1, self.n + 1):
+            if self.n % i == 0:
+                print(i)
+
+n = int(input(&quot;정수 입력: &quot;))
+DivisorFinder(n).show()</code></pre>
+</div>
+</div></section>
+<section id="sec5"><h2>5. map, zip 예제 10개</h2><div class="grid">
+<div class="card">
+<span class="badge">예제 5-1</span>
+<h3>map으로 정수 변환</h3>
+<pre><code>nums = list(map(int, input(&quot;숫자 입력: &quot;).split()))
+print(&quot;입력된 정수 리스트:&quot;, nums)
+print(&quot;합계:&quot;, sum(nums))</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-2</span>
+<h3>map으로 제곱</h3>
+<pre><code>nums = list(map(int, input(&quot;숫자 입력: &quot;).split()))
+squares = list(map(lambda x: x ** 2, nums))
+
+print(&quot;원본:&quot;, nums)
+print(&quot;제곱:&quot;, squares)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-3</span>
+<h3>map으로 문자열 길이</h3>
+<pre><code>words = input(&quot;단어 여러 개 입력: &quot;).split()
+lengths = list(map(len, words))
+
+print(&quot;단어:&quot;, words)
+print(&quot;길이:&quot;, lengths)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-4</span>
+<h3>zip으로 이름과 점수 묶기</h3>
+<pre><code>names = input(&quot;이름 입력: &quot;).split()
+scores = list(map(int, input(&quot;점수 입력: &quot;).split()))
+
+for name, score in zip(names, scores):
+    print(name, score)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-5</span>
+<h3>zip으로 두 과목 합계</h3>
+<pre><code>korean = list(map(int, input(&quot;국어 점수: &quot;).split()))
+math = list(map(int, input(&quot;수학 점수: &quot;).split()))
+
+for k, m in zip(korean, math):
+    print(&quot;합계:&quot;, k + m)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-6</span>
+<h3>zip으로 딕셔너리 만들기</h3>
+<pre><code>keys = input(&quot;항목명 입력: &quot;).split()
+values = input(&quot;값 입력: &quot;).split()
+data = dict(zip(keys, values))
+
+print(&quot;생성된 딕셔너리:&quot;, data)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-7</span>
+<h3>map과 zip으로 좌표 합</h3>
+<pre><code>x = list(map(int, input(&quot;x좌표 입력: &quot;).split()))
+y = list(map(int, input(&quot;y좌표 입력: &quot;).split()))
+points = list(zip(x, y))
+
+for a, b in points:
+    print(&quot;좌표:&quot;, a, b, &quot;합:&quot;, a + b)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-8</span>
+<h3>map으로 소수 변환</h3>
+<pre><code>temps = list(map(float, input(&quot;온도 입력: &quot;).split()))
+fahrenheit = list(map(lambda c: c * 9 / 5 + 32, temps))
+
+print(&quot;섭씨:&quot;, temps)
+print(&quot;화씨:&quot;, fahrenheit)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-9</span>
+<h3>zip으로 등수 출력</h3>
+<pre><code>names = input(&quot;이름 입력: &quot;).split()
+ranks = list(map(int, input(&quot;등수 입력: &quot;).split()))
+
+for name, rank in zip(names, ranks):
+    print(f&quot;{rank}등: {name}&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 5-10</span>
+<h3>map과 zip으로 차이 계산</h3>
+<pre><code>before = list(map(int, input(&quot;이전 값 입력: &quot;).split()))
+after = list(map(int, input(&quot;이후 값 입력: &quot;).split()))
+diff = list(map(lambda p: p[1] - p[0], zip(before, after)))
+
+print(&quot;변화량:&quot;, diff)</code></pre>
+</div>
+</div></section>
+<section id="sec6"><h2>6. map, zip OOP 예제 10개</h2><div class="grid">
+<div class="card">
+<span class="badge">예제 6-1</span>
+<h3>학생 객체 생성</h3>
+<pre><code>class Student:
+    def __init__(self, name, score):
+        self.name = name
+        self.score = score
+
+names = input(&quot;이름 입력: &quot;).split()
+scores = list(map(int, input(&quot;점수 입력: &quot;).split()))
+students = list(map(lambda p: Student(p[0], p[1]), zip(names, scores)))
+
+for s in students:
+    print(s.name, s.score)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-2</span>
+<h3>상품 객체 생성</h3>
+<pre><code>class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+names = input(&quot;상품명 입력: &quot;).split()
+prices = list(map(int, input(&quot;가격 입력: &quot;).split()))
+products = [Product(n, p) for n, p in zip(names, prices)]
+
+for p in products:
+    print(p.name, p.price, &quot;원&quot;)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-3</span>
+<h3>점수 객체 등급 출력</h3>
+<pre><code>class Score:
+    def __init__(self, value):
+        self.value = value
+
+    def grade(self):
+        return &quot;합격&quot; if self.value &gt;= 60 else &quot;불합격&quot;
+
+scores = list(map(int, input(&quot;점수 입력: &quot;).split()))
+objects = list(map(Score, scores))
+
+for obj in objects:
+    print(obj.value, obj.grade())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-4</span>
+<h3>좌표 객체 만들기</h3>
+<pre><code>class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def show(self):
+        print(f&quot;({self.x}, {self.y})&quot;)
+
+xs = list(map(int, input(&quot;x값 입력: &quot;).split()))
+ys = list(map(int, input(&quot;y값 입력: &quot;).split()))
+points = list(map(lambda p: Point(p[0], p[1]), zip(xs, ys)))
+
+for point in points:
+    point.show()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-5</span>
+<h3>회원 객체 딕셔너리</h3>
+<pre><code>class Member:
+    def __init__(self, name, level):
+        self.name = name
+        self.level = level
+
+names = input(&quot;이름 입력: &quot;).split()
+levels = input(&quot;등급 입력: &quot;).split()
+members = list(map(lambda p: Member(p[0], p[1]), zip(names, levels)))
+
+for m in members:
+    print(m.name, &quot;등급:&quot;, m.level)</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-6</span>
+<h3>성적표 클래스</h3>
+<pre><code>class ReportCard:
+    def __init__(self, names, scores):
+        self.records = list(zip(names, scores))
+
+    def print_report(self):
+        for name, score in self.records:
+            print(name, score)
+
+names = input(&quot;이름 입력: &quot;).split()
+scores = list(map(int, input(&quot;점수 입력: &quot;).split()))
+ReportCard(names, scores).print_report()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-7</span>
+<h3>할인 상품 클래스</h3>
+<pre><code>class SaleProduct:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    def discounted(self):
+        return int(self.price * 0.9)
+
+names = input(&quot;상품명 입력: &quot;).split()
+prices = list(map(int, input(&quot;가격 입력: &quot;).split()))
+items = [SaleProduct(n, p) for n, p in zip(names, prices)]
+
+for item in items:
+    print(item.name, &quot;할인가:&quot;, item.discounted())</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-8</span>
+<h3>팀 매칭 클래스</h3>
+<pre><code>class TeamMatcher:
+    def __init__(self, leaders, members):
+        self.pairs = list(zip(leaders, members))
+
+    def show(self):
+        for leader, member in self.pairs:
+            print(&quot;팀장:&quot;, leader, &quot;/ 팀원:&quot;, member)
+
+leaders = input(&quot;팀장 입력: &quot;).split()
+members = input(&quot;팀원 입력: &quot;).split()
+TeamMatcher(leaders, members).show()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-9</span>
+<h3>센서 데이터 클래스</h3>
+<pre><code>class SensorData:
+    def __init__(self, times, values):
+        self.data = list(zip(times, values))
+
+    def display(self):
+        for t, v in self.data:
+            print(t, &quot;시 측정값:&quot;, v)
+
+times = input(&quot;시간 입력: &quot;).split()
+values = list(map(float, input(&quot;측정값 입력: &quot;).split()))
+SensorData(times, values).display()</code></pre>
+</div>
+<div class="card">
+<span class="badge">예제 6-10</span>
+<h3>문자열 변환 객체</h3>
+<pre><code>class Word:
+    def __init__(self, text):
+        self.text = text
+
+    def upper(self):
+        return self.text.upper()
+
+words = input(&quot;영어 단어 입력: &quot;).split()
+objects = list(map(Word, words))
+
+for obj in objects:
+    print(obj.text, &quot;-&gt;&quot;, obj.upper())</code></pre>
+</div>
+</div></section>
+
+<div class="footer">끝 ✅ 총 60개 예제</div>
+</div>
+</body>
+</html>
