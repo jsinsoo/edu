@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>조건문·반복문·map·zip 서술형 평가</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Malgun Gothic','맑은 고딕',sans-serif;background:#eef2ff;color:#172033}
+header{background:linear-gradient(135deg,#172554,#2563eb,#38bdf8);color:white;padding:30px;text-align:center}
+header h1{margin:0;font-size:32px}
+header p{font-size:17px;line-height:1.7}
+.wrap{display:grid;grid-template-columns:240px 1fr;gap:18px;padding:18px;max-width:1500px;margin:auto}
+nav{position:sticky;top:10px;height:calc(100vh - 20px);overflow:auto;background:white;border-radius:18px;padding:15px;box-shadow:0 10px 25px rgba(15,23,42,.12)}
+nav button{width:100%;margin:5px 0;padding:9px;border:0;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:700;cursor:pointer}
+nav button:hover{background:#60a5fa;color:white}
+main{background:white;border-radius:18px;padding:22px;box-shadow:0 10px 25px rgba(15,23,42,.12)}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#f8fafc;border:1px solid #dbeafe;padding:15px;border-radius:14px;margin-bottom:20px}
+.info input{font-size:16px;padding:10px;border:1px solid #cbd5e1;border-radius:10px}
+.card{border:1px solid #dbeafe;background:#f8fafc;border-radius:18px;padding:18px;margin:18px 0}
+.badge{display:inline-block;background:#1d4ed8;color:white;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+h2{color:#1d4ed8;border-left:7px solid #38bdf8;padding-left:12px}
+pre{background:#0f172a;color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;white-space:pre-wrap;line-height:1.55}
+textarea{width:100%;min-height:78px;font-size:15px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-family:Consolas,'D2Coding',monospace}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.action{padding:13px 18px;border:0;border-radius:12px;background:#2563eb;color:white;font-weight:800;cursor:pointer;font-size:16px}
+.action.secondary{background:#0f766e}
+.action.gray{background:#475569}
+.result{display:none;margin-top:12px;padding:14px;border-radius:12px;background:#ecfeff;border:1px solid #67e8f9;line-height:1.8}
+.correct{color:#047857;font-weight:900}
+.wrong{color:#dc2626;font-weight:900}
+.scorebox{font-size:20px;background:#fff7ed;border:1px solid #fed7aa;padding:18px;border-radius:16px;margin:18px 0}
+.small{color:#64748b;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+<h1>🐍 조건문·반복문·map·zip 서술형 평가 60문항</h1>
+<p>각 문항은 코드 실행 결과를 쓰는 서술형 문제입니다. 모든 코드는 <b>2줄 이상 출력</b>합니다.<br>
+채점 후 <b>문항별 정오답, 점수, 상세 풀이</b>를 확인하고 TXT 파일을 저장할 수 있습니다.</p>
+</header>
+<div class="wrap">
+<nav>
+<h3>📌 문항 이동</h3>
+<div id="navBtns"></div>
+</nav>
+<main>
+<div class="info">
+<label>학번<br><input id="studentId" placeholder="학번 "></label>
+<label>이름<br><input id="studentName" placeholder="이름 "></label>
+</div>
+<div class="btns">
+<button class="action" onclick="gradeAll()">채점하기</button>
+<button class="action secondary" onclick="downloadTxt()">TXT 산출</button>
+<button class="action gray" onclick="showAllSolutions()">상세 풀이 모두 보기</button>
+</div>
+<div id="scoreBox" class="scorebox">아직 채점하지 않았습니다.</div>
+<div id="questions"></div>
+</main>
+</div>
+
+<script>
+const QUESTIONS = [{"cat": "조건문", "title": "점수 등급", "code": "score = 85\nif score >= 90:\n    result = \"A\"\nelif score >= 80:\n    result = \"B\"\nelse:\n    result = \"C\"\nprint(\"점수:\", score)\nprint(\"등급:\", result)", "answer": "점수: 85\n등급: B", "explain": "85점은 90 이상은 아니지만 80 이상이므로 B가 출력됩니다."}, {"cat": "조건문", "title": "짝수 판별", "code": "n = 14\nif n % 2 == 0:\n    kind = \"짝수\"\nelse:\n    kind = \"홀수\"\nprint(\"숫자:\", n)\nprint(\"판정:\", kind)", "answer": "숫자: 14\n판정: 짝수", "explain": "14를 2로 나누면 나머지가 0이므로 짝수입니다."}, {"cat": "조건문", "title": "나이 요금", "code": "age = 13\nif age < 8:\n    fee = 0\nelif age < 19:\n    fee = 8000\nelse:\n    fee = 12000\nprint(\"나이:\", age)\nprint(\"요금:\", fee)", "answer": "나이: 13\n요금: 8000", "explain": "13은 8 이상 19 미만이므로 청소년 요금 8000입니다."}, {"cat": "조건문", "title": "온도 상태", "code": "temp = 31\nif temp >= 30:\n    state = \"더움\"\nelif temp <= 5:\n    state = \"추움\"\nelse:\n    state = \"보통\"\nprint(\"온도:\", temp)\nprint(\"상태:\", state)", "answer": "온도: 31\n상태: 더움", "explain": "31은 30 이상이므로 상태는 더움입니다."}, {"cat": "조건문", "title": "배송비", "code": "price = 42000\nif price >= 50000:\n    delivery = 0\nelse:\n    delivery = 3000\nprint(\"상품금액:\", price)\nprint(\"결제금액:\", price + delivery)", "answer": "상품금액: 42000\n결제금액: 45000", "explain": "42000은 50000 미만이므로 배송비 3000이 추가됩니다."}, {"cat": "조건문", "title": "비밀번호 길이", "code": "pw = \"abc12345\"\nif len(pw) >= 8:\n    level = \"안전\"\nelse:\n    level = \"주의\"\nprint(\"길이:\", len(pw))\nprint(\"등급:\", level)", "answer": "길이: 8\n등급: 안전", "explain": "문자열 길이가 8이므로 안전입니다."}, {"cat": "조건문", "title": "월 계절", "code": "month = 11\nif month in [3,4,5]:\n    season = \"봄\"\nelif month in [6,7,8]:\n    season = \"여름\"\nelif month in [9,10,11]:\n    season = \"가을\"\nelse:\n    season = \"겨울\"\nprint(\"월:\", month)\nprint(\"계절:\", season)", "answer": "월: 11\n계절: 가을", "explain": "11월은 [9,10,11]에 포함되어 가을입니다."}, {"cat": "조건문", "title": "삼각형", "code": "a, b, c = 3, 4, 8\nif a + b > c and a + c > b and b + c > a:\n    msg = \"가능\"\nelse:\n    msg = \"불가능\"\nprint(\"세 변:\", a, b, c)\nprint(\"삼각형:\", msg)", "answer": "세 변: 3 4 8\n삼각형: 불가능", "explain": "3+4=7은 8보다 크지 않으므로 삼각형을 만들 수 없습니다."}, {"cat": "조건문", "title": "최댓값", "code": "a, b = 17, 25\nif a > b:\n    big = a\nelse:\n    big = b\nprint(\"비교:\", a, b)\nprint(\"큰 수:\", big)", "answer": "비교: 17 25\n큰 수: 25", "explain": "17보다 25가 크므로 큰 수는 25입니다."}, {"cat": "조건문", "title": "출석률", "code": "rate = 74\nif rate >= 90:\n    msg = \"우수\"\nelif rate >= 75:\n    msg = \"보통\"\nelse:\n    msg = \"주의\"\nprint(\"출석률:\", rate)\nprint(\"판정:\", msg)", "answer": "출석률: 74\n판정: 주의", "explain": "74는 75 미만이므로 주의입니다."}, {"cat": "조건문 OOP", "title": "Student 등급", "code": "class Student:\n    def __init__(self, score):\n        self.score = score\n    def grade(self):\n        if self.score >= 80:\n            return \"통과\"\n        return \"재도전\"\n\ns = Student(82)\nprint(\"점수:\", s.score)\nprint(\"결과:\", s.grade())", "answer": "점수: 82\n결과: 통과", "explain": "Student 객체의 score가 82이고 80 이상이므로 통과입니다."}, {"cat": "조건문 OOP", "title": "Account 출금", "code": "class Account:\n    def __init__(self, money):\n        self.money = money\n    def check(self, amount):\n        if self.money >= amount:\n            return \"가능\"\n        return \"부족\"\n\na = Account(5000)\nprint(\"잔액:\", a.money)\nprint(\"출금:\", a.check(7000))", "answer": "잔액: 5000\n출금: 부족", "explain": "잔액 5000은 출금액 7000보다 작으므로 부족입니다."}, {"cat": "조건문 OOP", "title": "Member 등급", "code": "class Member:\n    def __init__(self, point):\n        self.point = point\n    def level(self):\n        if self.point >= 1000:\n            return \"VIP\"\n        return \"BASIC\"\n\nm = Member(1200)\nprint(\"포인트:\", m.point)\nprint(\"회원:\", m.level())", "answer": "포인트: 1200\n회원: VIP", "explain": "포인트가 1000 이상이므로 VIP입니다."}, {"cat": "조건문 OOP", "title": "Temperature", "code": "class Temperature:\n    def __init__(self, value):\n        self.value = value\n    def state(self):\n        if self.value < 0:\n            return \"영하\"\n        return \"영상\"\n\nt = Temperature(-3)\nprint(\"온도:\", t.value)\nprint(\"상태:\", t.state())", "answer": "온도: -3\n상태: 영하", "explain": "-3은 0보다 작으므로 영하입니다."}, {"cat": "조건문 OOP", "title": "Order 할인", "code": "class Order:\n    def __init__(self, price):\n        self.price = price\n    def discount(self):\n        if self.price >= 30000:\n            return 3000\n        return 0\n\no = Order(35000)\nprint(\"금액:\", o.price)\nprint(\"할인:\", o.discount())", "answer": "금액: 35000\n할인: 3000", "explain": "35000은 30000 이상이므로 할인 3000입니다."}, {"cat": "조건문 OOP", "title": "Character HP", "code": "class Character:\n    def __init__(self, hp):\n        self.hp = hp\n    def status(self):\n        if self.hp > 0:\n            return \"생존\"\n        return \"탈락\"\n\nc = Character(0)\nprint(\"체력:\", c.hp)\nprint(\"상태:\", c.status())", "answer": "체력: 0\n상태: 탈락", "explain": "hp가 0이므로 생존 조건 hp>0을 만족하지 않습니다."}, {"cat": "조건문 OOP", "title": "Divider", "code": "class Divider:\n    def run(self, a, b):\n        if b == 0:\n            return \"불가\"\n        return a // b\n\nd = Divider()\nprint(\"입력:\", 8, 2)\nprint(\"몫:\", d.run(8, 2))", "answer": "입력: 8 2\n몫: 4", "explain": "b가 0이 아니므로 8//2=4입니다."}, {"cat": "조건문 OOP", "title": "Library", "code": "class LibraryUser:\n    def __init__(self, count):\n        self.count = count\n    def borrow(self):\n        if self.count < 3:\n            return \"대출가능\"\n        return \"대출제한\"\n\nu = LibraryUser(3)\nprint(\"대출권수:\", u.count)\nprint(\"판정:\", u.borrow())", "answer": "대출권수: 3\n판정: 대출제한", "explain": "count가 3 미만이 아니므로 대출제한입니다."}, {"cat": "조건문 OOP", "title": "Card", "code": "class Card:\n    def __init__(self, balance):\n        self.balance = balance\n    def ride(self):\n        if self.balance >= 1500:\n            return \"탑승\"\n        return \"충전\"\n\ncard = Card(1600)\nprint(\"잔액:\", card.balance)\nprint(\"버스:\", card.ride())", "answer": "잔액: 1600\n버스: 탑승", "explain": "1600은 1500 이상이므로 탑승입니다."}, {"cat": "조건문 OOP", "title": "FileChecker", "code": "class FileChecker:\n    def __init__(self, name):\n        self.name = name\n    def kind(self):\n        if self.name.endswith(\".py\"):\n            return \"Python\"\n        return \"Other\"\n\nf = FileChecker(\"main.py\")\nprint(\"파일:\", f.name)\nprint(\"종류:\", f.kind())", "answer": "파일: main.py\n종류: Python", "explain": "파일명이 .py로 끝나므로 Python입니다."}, {"cat": "반복문", "title": "range 출력", "code": "for i in range(1, 3):\n    print(\"번호:\", i)\nprint(\"완료:\", \"끝\")", "answer": "번호: 1\n번호: 2\n완료: 끝", "explain": "range(1,3)은 1,2 두 번 반복되어 두 줄, 이후 완료가 출력됩니다."}, {"cat": "반복문", "title": "합계", "code": "total = 0\nfor i in range(1, 4):\n    total += i\nprint(\"마지막:\", i)\nprint(\"합계:\", total)", "answer": "마지막: 3\n합계: 6", "explain": "1+2+3=6이고 마지막 i는 3입니다."}, {"cat": "반복문", "title": "문자 반복", "code": "word = \"AI\"\nfor ch in word:\n    print(\"문자:\", ch)\nprint(\"길이:\", len(word))", "answer": "문자: A\n문자: I\n길이: 2", "explain": "AI는 A, I 두 문자로 반복되고 길이는 2입니다."}, {"cat": "반복문", "title": "리스트 합", "code": "nums = [2, 4, 6]\ns = 0\nfor n in nums:\n    s += n\nprint(\"개수:\", len(nums))\nprint(\"합:\", s)", "answer": "개수: 3\n합: 12", "explain": "리스트 원소는 3개이고 합은 12입니다."}, {"cat": "반복문", "title": "while 감소", "code": "n = 3\nwhile n > 1:\n    print(\"n:\", n)\n    n -= 1\nprint(\"종료값:\", n)", "answer": "n: 3\nn: 2\n종료값: 1", "explain": "3과 2에서 반복 출력 후 n이 1이 되면 종료합니다."}, {"cat": "반복문", "title": "continue", "code": "for i in range(1, 5):\n    if i % 2 == 1:\n        continue\n    print(\"짝수:\", i)\nprint(\"끝:\", i)", "answer": "짝수: 2\n짝수: 4\n끝: 4", "explain": "홀수는 continue로 건너뛰고 2,4만 출력됩니다."}, {"cat": "반복문", "title": "break", "code": "for i in range(1, 6):\n    if i == 3:\n        break\n    print(\"값:\", i)\nprint(\"멈춤:\", i)", "answer": "값: 1\n값: 2\n멈춤: 3", "explain": "i가 3이 되면 break되어 반복문을 빠져나옵니다."}, {"cat": "반복문", "title": "enumerate", "code": "names = [\"김\", \"이\"]\nfor idx, name in enumerate(names, 1):\n    print(idx, name)\nprint(\"총원:\", len(names))", "answer": "1 김\n2 이\n총원: 2", "explain": "enumerate(names,1)은 번호 1부터 시작합니다."}, {"cat": "반복문", "title": "중첩 반복", "code": "for i in range(1, 3):\n    for j in range(1, 2):\n        print(\"쌍:\", i, j)\nprint(\"완료:\", i)", "answer": "쌍: 1 1\n쌍: 2 1\n완료: 2", "explain": "안쪽 j는 항상 1이고 바깥 i가 1,2로 반복됩니다."}, {"cat": "반복문", "title": "리스트 컴프리헨션", "code": "squares = [x*x for x in range(1, 4)]\nfor v in squares[:2]:\n    print(\"값:\", v)\nprint(\"리스트:\", squares)", "answer": "값: 1\n값: 4\n리스트: [1, 4, 9]", "explain": "1,2,3의 제곱 리스트에서 앞의 두 값 1,4를 출력합니다."}, {"cat": "반복문 OOP", "title": "NumberPrinter", "code": "class NumberPrinter:\n    def show(self):\n        for i in range(1, 3):\n            print(\"숫자:\", i)\n\np = NumberPrinter()\np.show()\nprint(\"상태:\", \"완료\")", "answer": "숫자: 1\n숫자: 2\n상태: 완료", "explain": "show()가 1,2를 출력하고 마지막 상태가 출력됩니다."}, {"cat": "반복문 OOP", "title": "SumBox", "code": "class SumBox:\n    def calc(self, nums):\n        s = 0\n        for n in nums:\n            s += n\n        return s\n\nbox = SumBox()\nprint(\"자료:\", [1, 2, 3])\nprint(\"합계:\", box.calc([1, 2, 3]))", "answer": "자료: [1, 2, 3]\n합계: 6", "explain": "객체 메서드 calc가 리스트 합 6을 반환합니다."}, {"cat": "반복문 OOP", "title": "Gugudan", "code": "class Gugudan:\n    def __init__(self, dan):\n        self.dan = dan\n    def run(self):\n        for i in range(1, 3):\n            print(self.dan, \"x\", i, \"=\", self.dan*i)\n\ng = Gugudan(3)\ng.run()\nprint(\"단:\", g.dan)", "answer": "3 x 1 = 3\n3 x 2 = 6\n단: 3", "explain": "3단에서 i가 1,2일 때의 곱을 출력합니다."}, {"cat": "반복문 OOP", "title": "Classroom", "code": "class Classroom:\n    def __init__(self, names):\n        self.names = names\n    def call(self):\n        for name in self.names:\n            print(\"출석:\", name)\n\nc = Classroom([\"민수\", \"지아\"])\nc.call()\nprint(\"인원:\", len(c.names))", "answer": "출석: 민수\n출석: 지아\n인원: 2", "explain": "names 리스트 두 명을 순서대로 출력합니다."}, {"cat": "반복문 OOP", "title": "Timer", "code": "class Timer:\n    def count(self, n):\n        while n > 1:\n            print(\"카운트:\", n)\n            n -= 1\n        return n\n\nt = Timer()\nlast = t.count(3)\nprint(\"마지막:\", last)", "answer": "카운트: 3\n카운트: 2\n마지막: 1", "explain": "3,2에서 반복 후 1을 반환합니다."}, {"cat": "반복문 OOP", "title": "Cart", "code": "class Cart:\n    def __init__(self, prices):\n        self.prices = prices\n    def show(self):\n        for p in self.prices:\n            print(\"가격:\", p)\n\ncart = Cart([1000, 2000])\ncart.show()\nprint(\"개수:\", len(cart.prices))", "answer": "가격: 1000\n가격: 2000\n개수: 2", "explain": "가격 리스트 원소 2개를 반복 출력합니다."}, {"cat": "반복문 OOP", "title": "WordAnalyzer", "code": "class WordAnalyzer:\n    def __init__(self, word):\n        self.word = word\n    def spell(self):\n        for ch in self.word:\n            print(\"철자:\", ch)\n\nw = WordAnalyzer(\"go\")\nw.spell()\nprint(\"길이:\", len(w.word))", "answer": "철자: g\n철자: o\n길이: 2", "explain": "go의 글자 g, o를 반복 출력합니다."}, {"cat": "반복문 OOP", "title": "ScoreList", "code": "class ScoreList:\n    def __init__(self, scores):\n        self.scores = scores\n    def pass_count(self):\n        count = 0\n        for s in self.scores:\n            if s >= 60:\n                count += 1\n        return count\n\nsl = ScoreList([50, 70, 90])\nprint(\"점수:\", sl.scores)\nprint(\"합격수:\", sl.pass_count())", "answer": "점수: [50, 70, 90]\n합격수: 2", "explain": "70과 90만 60 이상이므로 합격수는 2입니다."}, {"cat": "반복문 OOP", "title": "Robot", "code": "class Robot:\n    def __init__(self, names):\n        self.names = names\n    def boot(self):\n        for name in self.names:\n            print(name, \"ON\")\n\nr = Robot([\"R1\", \"R2\"])\nr.boot()\nprint(\"로봇수:\", len(r.names))", "answer": "R1 ON\nR2 ON\n로봇수: 2", "explain": "두 로봇 이름을 반복하며 ON을 출력합니다."}, {"cat": "반복문 OOP", "title": "DivisorFinder", "code": "class DivisorFinder:\n    def __init__(self, n):\n        self.n = n\n    def small(self):\n        for i in range(1, 4):\n            if self.n % i == 0:\n                print(\"약수:\", i)\n\nd = DivisorFinder(6)\nd.small()\nprint(\"대상:\", d.n)", "answer": "약수: 1\n약수: 2\n약수: 3\n대상: 6", "explain": "1,2,3은 모두 6의 약수입니다."}, {"cat": "map, zip", "title": "map 정수 변환", "code": "data = list(map(int, [\"3\", \"5\"]))\nprint(\"자료:\", data)\nprint(\"합계:\", sum(data))", "answer": "자료: [3, 5]\n합계: 8", "explain": "문자열 3과 5가 정수로 변환되어 합은 8입니다."}, {"cat": "map, zip", "title": "map 제곱", "code": "nums = [1, 2, 3]\nresult = list(map(lambda x: x*x, nums))\nprint(\"원본:\", nums)\nprint(\"제곱:\", result)", "answer": "원본: [1, 2, 3]\n제곱: [1, 4, 9]", "explain": "map이 각 원소에 제곱 함수를 적용합니다."}, {"cat": "map, zip", "title": "map 길이", "code": "words = [\"cat\", \"school\"]\nlengths = list(map(len, words))\nprint(\"단어:\", words)\nprint(\"길이:\", lengths)", "answer": "단어: ['cat', 'school']\n길이: [3, 6]", "explain": "cat의 길이는 3, school의 길이는 6입니다."}, {"cat": "map, zip", "title": "zip 이름 점수", "code": "names = [\"가영\", \"나래\"]\nscores = [90, 80]\npairs = list(zip(names, scores))\nprint(\"묶음:\", pairs)\nprint(\"첫번째:\", pairs[0])", "answer": "묶음: [('가영', 90), ('나래', 80)]\n첫번째: ('가영', 90)", "explain": "zip은 같은 위치의 이름과 점수를 튜플로 묶습니다."}, {"cat": "map, zip", "title": "zip 딕셔너리", "code": "keys = [\"국어\", \"수학\"]\nvalues = [88, 95]\ndata = dict(zip(keys, values))\nprint(\"성적표:\", data)\nprint(\"수학:\", data[\"수학\"])", "answer": "성적표: {'국어': 88, '수학': 95}\n수학: 95", "explain": "zip 결과를 dict로 바꾸면 과목별 점수 딕셔너리가 됩니다."}, {"cat": "map, zip", "title": "map zip 합", "code": "a = [1, 2]\nb = [10, 20]\nsums = list(map(lambda p: p[0] + p[1], zip(a, b)))\nprint(\"쌍:\", list(zip(a, b)))\nprint(\"합:\", sums)", "answer": "쌍: [(1, 10), (2, 20)]\n합: [11, 22]", "explain": "zip으로 묶은 각 쌍의 합을 map으로 계산합니다."}, {"cat": "map, zip", "title": "zip 좌표", "code": "x = [2, 4]\ny = [3, 5]\npoints = list(zip(x, y))\nprint(\"좌표:\", points)\nprint(\"개수:\", len(points))", "answer": "좌표: [(2, 3), (4, 5)]\n개수: 2", "explain": "두 좌표 리스트를 같은 인덱스끼리 묶어 좌표 2개를 만듭니다."}, {"cat": "map, zip", "title": "map 대문자", "code": "words = [\"ai\", \"python\"]\nupper = list(map(str.upper, words))\nprint(\"원본:\", words)\nprint(\"변환:\", upper)", "answer": "원본: ['ai', 'python']\n변환: ['AI', 'PYTHON']", "explain": "str.upper가 각 문자열을 대문자로 바꿉니다."}, {"cat": "map, zip", "title": "zip 풀기", "code": "pairs = [(\"A\", 1), (\"B\", 2)]\nletters, nums = zip(*pairs)\nprint(\"문자:\", list(letters))\nprint(\"숫자:\", list(nums))", "answer": "문자: ['A', 'B']\n숫자: [1, 2]", "explain": "*zip 방식으로 묶인 자료를 다시 분리합니다."}, {"cat": "map, zip", "title": "map pow", "code": "bases = [2, 3]\nexps = [3, 2]\nresult = list(map(pow, bases, exps))\nprint(\"입력:\", list(zip(bases, exps)))\nprint(\"결과:\", result)", "answer": "입력: [(2, 3), (3, 2)]\n결과: [8, 9]", "explain": "pow(2,3)=8, pow(3,2)=9입니다."}, {"cat": "map, zip OOP", "title": "Student 객체", "code": "class Student:\n    def __init__(self, name, score):\n        self.name = name\n        self.score = score\n\nnames = [\"민수\", \"서연\"]\nscores = [70, 95]\nstudents = list(map(lambda p: Student(p[0], p[1]), zip(names, scores)))\nprint(students[0].name, students[0].score)\nprint(students[1].name, students[1].score)", "answer": "민수 70\n서연 95", "explain": "zip으로 묶은 뒤 Student 객체 2개를 생성합니다."}, {"cat": "map, zip OOP", "title": "Product 객체", "code": "class Product:\n    def __init__(self, name, price):\n        self.name = name\n        self.price = price\n\nitems = list(map(lambda p: Product(p[0], p[1]), zip([\"볼펜\", \"노트\"], [500, 1500])))\nprint(items[0].name, items[0].price)\nprint(items[1].name, items[1].price)", "answer": "볼펜 500\n노트 1500", "explain": "zip의 각 쌍을 Product 생성자에 넣어 객체를 만듭니다."}, {"cat": "map, zip OOP", "title": "Score 객체", "code": "class Score:\n    def __init__(self, value):\n        self.value = value\n    def pass_fail(self):\n        return \"P\" if self.value >= 60 else \"F\"\n\nobjects = list(map(Score, [55, 80]))\nprint(objects[0].value, objects[0].pass_fail())\nprint(objects[1].value, objects[1].pass_fail())", "answer": "55 F\n80 P", "explain": "55는 불합격 F, 80은 합격 P입니다."}, {"cat": "map, zip OOP", "title": "Point 객체", "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\npoints = list(map(lambda p: Point(p[0], p[1]), zip([1, 2], [4, 5])))\nprint(points[0].x, points[0].y)\nprint(points[1].x, points[1].y)", "answer": "1 4\n2 5", "explain": "zip([1,2],[4,5])는 (1,4), (2,5)를 만듭니다."}, {"cat": "map, zip OOP", "title": "Member 객체", "code": "class Member:\n    def __init__(self, name, level):\n        self.name = name\n        self.level = level\n\nmembers = [Member(n, l) for n, l in zip([\"A\", \"B\"], [\"VIP\", \"BASIC\"])]\nprint(members[0].name, members[0].level)\nprint(members[1].name, members[1].level)", "answer": "A VIP\nB BASIC", "explain": "zip 결과를 이용해 Member 객체 2개를 생성합니다."}, {"cat": "map, zip OOP", "title": "ReportCard", "code": "class ReportCard:\n    def __init__(self, names, scores):\n        self.records = list(zip(names, scores))\n\nr = ReportCard([\"철수\", \"영희\"], [88, 77])\nprint(r.records[0])\nprint(r.records[1])", "answer": "('철수', 88)\n('영희', 77)", "explain": "records는 이름과 점수를 튜플로 묶은 리스트입니다."}, {"cat": "map, zip OOP", "title": "SaleProduct", "code": "class SaleProduct:\n    def __init__(self, price):\n        self.price = price\n    def sale(self):\n        return int(self.price * 0.8)\n\nproducts = list(map(SaleProduct, [1000, 2000]))\nprint(\"할인가:\", products[0].sale())\nprint(\"할인가:\", products[1].sale())", "answer": "할인가: 800\n할인가: 1600", "explain": "각 가격에 20% 할인하여 0.8을 곱합니다."}, {"cat": "map, zip OOP", "title": "TeamMatcher", "code": "class TeamMatcher:\n    def __init__(self, leaders, members):\n        self.pairs = list(zip(leaders, members))\n\ntm = TeamMatcher([\"L1\", \"L2\"], [\"M1\", \"M2\"])\nprint(tm.pairs[0])\nprint(tm.pairs[1])", "answer": "('L1', 'M1')\n('L2', 'M2')", "explain": "리더와 팀원을 같은 순서끼리 묶습니다."}, {"cat": "map, zip OOP", "title": "SensorData", "code": "class SensorData:\n    def __init__(self, times, values):\n        self.data = list(zip(times, values))\n\ns = SensorData([\"1시\", \"2시\"], [10.5, 11.5])\nprint(s.data[0])\nprint(s.data[1])", "answer": "('1시', 10.5)\n('2시', 11.5)", "explain": "시간과 측정값이 같은 위치끼리 묶입니다."}, {"cat": "map, zip OOP", "title": "Word 객체", "code": "class Word:\n    def __init__(self, text):\n        self.text = text\n    def upper(self):\n        return self.text.upper()\n\nwords = list(map(Word, [\"hi\", \"bye\"]))\nprint(words[0].text, words[0].upper())\nprint(words[1].text, words[1].upper())", "answer": "hi HI\nbye BYE", "explain": "Word 객체의 upper 메서드가 대문자 문자열을 반환합니다."}];
+
+function norm(s){
+    return (s||"").replace(/\r/g,"").trim().split("\n").map(x=>x.trim()).join("\n");
+}
+
+function esc(s){
+    return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+
+function render(){
+    const qbox=document.getElementById("questions");
+    const nav=document.getElementById("navBtns");
+    let html="";
+    let navHtml="";
+    let current="";
+    QUESTIONS.forEach((q,i)=>{
+        if(q.cat!==current){
+            current=q.cat;
+            html += `<h2>${current}</h2>`;
+        }
+        navHtml += `<button onclick="location.hash='q${i+1}'">${i+1}번</button>`;
+        html += `
+        <div class="card" id="q${i+1}">
+            <span class="badge">${i+1}번 · ${q.cat}</span>
+            <h3>${q.title}</h3>
+            <p><b>문제.</b> 다음 파이썬 코드의 출력 결과를 줄바꿈까지 고려하여 쓰시오.</p>
+            <pre><code>${esc(q.code)}</code></pre>
+            <textarea id="ans${i}" placeholder="출력 결과를 줄 단위로 입력하세요."></textarea>
+            <div id="res${i}" class="result"></div>
+        </div>`;
+    });
+    qbox.innerHTML=html;
+    nav.innerHTML=navHtml;
+}
+
+function gradeAll(){
+    let correct=0;
+    QUESTIONS.forEach((q,i)=>{
+        const user=norm(document.getElementById("ans"+i).value);
+        const answer=norm(q.answer);
+        const ok=user===answer;
+        if(ok) correct++;
+        const res=document.getElementById("res"+i);
+        res.style.display="block";
+        res.innerHTML = `
+        <div>${ok ? '<span class="correct">정답</span>' : '<span class="wrong">오답</span>'}</div>
+        <b>정답 출력</b>
+        <pre><code>${esc(q.answer)}</code></pre>
+        <b>상세 풀이</b><br>${q.explain}
+        `;
+    });
+    const score=Math.round(correct/QUESTIONS.length*100);
+    document.getElementById("scoreBox").innerHTML =
+        `총점: <b>${score}점</b> / 정답: <b>${correct}</b>개 / 전체: <b>${QUESTIONS.length}</b>문항`;
+}
+
+function showAllSolutions(){
+    QUESTIONS.forEach((q,i)=>{
+        const res=document.getElementById("res"+i);
+        res.style.display="block";
+        res.innerHTML = `
+        <b>정답 출력</b>
+        <pre><code>${esc(q.answer)}</code></pre>
+        <b>상세 풀이</b><br>${q.explain}
+        `;
+    });
+}
+
+function downloadTxt(){
+    gradeAll();
+    let sid=document.getElementById("studentId").value.trim() || "학번";
+    let name=document.getElementById("studentName").value.trim() || "이름";
+    let now=new Date();
+    let stamp=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+"_"+String(now.getHours()).padStart(2,"0")+"-"+String(now.getMinutes()).padStart(2,"0")+"-"+String(now.getSeconds()).padStart(2,"0");
+
+    let correct=0;
+    let lines=[];
+    lines.push("조건문·반복문·map·zip 서술형 평가 결과");
+    lines.push("학번: "+sid);
+    lines.push("이름: "+name);
+    lines.push("응시시각: "+stamp);
+    lines.push("");
+
+    QUESTIONS.forEach((q,i)=>{
+        const user=norm(document.getElementById("ans"+i).value);
+        const answer=norm(q.answer);
+        const ok=user===answer;
+        if(ok) correct++;
+        lines.push(`[${i+1}번] ${q.cat} - ${q.title} : ${ok ? "정답" : "오답"}`);
+        lines.push("학생 답안:");
+        lines.push(user || "(미입력)");
+        lines.push("정답:");
+        lines.push(q.answer);
+        lines.push("상세 풀이: "+q.explain);
+        lines.push("----------------------------------------");
+    });
+    let score=Math.round(correct/QUESTIONS.length*100);
+    lines.splice(4,0,"점수: "+score+"점","정답 수: "+correct+"/"+QUESTIONS.length);
+
+    const blob=new Blob([lines.join("\n")],{type:"text/plain;charset=utf-8"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=`${sid}_${name}_조건반복문_${score}점_${stamp}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+render();
+</script>
+</body>
+</html>
