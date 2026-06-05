@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공공데이터 API로 분석하는 지속가능 발전과 대한민국의 소멸 도시</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Malgun Gothic','Noto Sans KR',Arial,sans-serif;background:#f3f7fb;color:#1d2830;line-height:1.75}
+header{background:linear-gradient(135deg,#102a43,#006d77,#83c5be);color:white;text-align:center;padding:48px 24px}
+header h1{font-size:38px;margin:0;font-weight:900;letter-spacing:-1px} header p{max-width:1050px;margin:14px auto 0;font-size:18px}
+nav{position:sticky;top:0;z-index:20;background:#ffffffee;border-bottom:1px solid #d6e4ea;text-align:center;padding:12px;backdrop-filter:blur(8px)}
+nav a{display:inline-block;text-decoration:none;color:#102a43;background:#e6f4f1;border-radius:999px;padding:8px 14px;margin:4px;font-weight:800}
+section{max-width:1200px;margin:28px auto;padding:0 18px}.card{background:white;border:1px solid #d9e8ee;border-radius:24px;padding:27px;margin:24px 0;box-shadow:0 8px 24px rgba(16,42,67,.10)}
+h2{color:#006d77;font-size:29px;margin-top:0} h3{color:#0b7285}.poster{display:grid;grid-template-columns:1.08fr .92fr;gap:22px}.big{font-size:48px;font-weight:900;line-height:1.15;color:#102a43;margin:18px 0}.badge{display:inline-block;background:#006d77;color:white;border-radius:999px;padding:6px 13px;margin:4px;font-weight:900}.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:18px}.kpi div{background:#f0fbfa;border:1px solid #cdecea;border-radius:17px;padding:17px;text-align:center;font-weight:700}.kpi b{display:block;font-size:28px;color:#006d77}.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.flow div{background:#f6fcff;border-left:7px solid #006d77;border-radius:15px;padding:14px;font-weight:800}table{width:100%;border-collapse:collapse}th,td{border:1px solid #d4e5ea;padding:11px;text-align:left;vertical-align:top}th{background:#e7f5f4;color:#102a43}pre{background:#18252b;color:#e8fbff;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.55}code{font-family:Consolas,Menlo,monospace}.copy{border:0;background:#005f73;color:white;padding:10px 16px;border-radius:11px;font-weight:900;cursor:pointer}.policy{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.policy div{background:#f8feff;border:1px solid #d7edf0;border-radius:18px;padding:18px}.warning{background:#fff7df;border-left:8px solid #ee9b00;border-radius:13px;padding:16px}.insight{background:#f4fbf7;border-left:8px solid #2a9d8f;border-radius:14px;padding:16px;margin:12px 0}.danger{background:#fff1f2;border-left:8px solid #d62828;border-radius:14px;padding:16px;margin:12px 0}footer{text-align:center;padding:34px;color:#52656b}@media(max-width:900px){.poster,.policy{grid-template-columns:1fr}.flow,.kpi{grid-template-columns:1fr}header h1{font-size:30px}.big{font-size:36px}}
+</style>
+<script>
+function copyCode(){const text=document.getElementById('pycode').innerText;navigator.clipboard.writeText(text);alert('파이썬 코드가 복사되었습니다.');}
+</script>
+</head>
+<body>
+<header>
+<h1>공공데이터 API로 분석하는 지속가능 발전과 대한민국의 소멸 도시</h1>
+<p>지난 30년 인구 구조를 분석하고, 앞으로 10년의 지방소멸위험 추세선을 그리며, 도시의 지속가능한 미래 정책을 개발하는 파이썬 프로젝트</p>
+</header>
+<nav><a href="#poster">포스터</a><a href="#data">공공데이터</a><a href="#process">분석 절차</a><a href="#code">파이썬 코드</a><a href="#insight">인사이트</a><a href="#policy">정책 개발</a><a href="#activity">활동 문항</a></nav>
+<section id="poster" class="card"><div class="poster"><div><span class="badge">공공데이터 API</span><span class="badge">지방소멸</span><span class="badge">지속가능발전</span><p class="big">도시가 사라지는 속도,<br>데이터로 붙잡다</p><p>대한민국의 미래는 단순히 인구 수의 문제가 아니라 청년, 일자리, 교육, 교통, 돌봄, 산업이 함께 움직이는 지속가능성의 문제입니다. 공공데이터 API로 지역 인구 구조를 읽으면 소멸 위험 도시의 현재와 미래를 더 분명하게 볼 수 있습니다.</p></div><div class="card" style="margin:0;background:#f2fbfd"><h2>핵심 질문</h2><p><b>Q1.</b> 지난 30년 동안 지역 인구는 얼마나 줄었는가?</p><p><b>Q2.</b> 20~39세 여성 인구와 65세 이상 고령 인구의 비율은 어떻게 변했는가?</p><p><b>Q3.</b> 앞으로 10년 뒤 소멸위험지수는 어느 단계가 될 가능성이 큰가?</p><div class="kpi"><div><b>30년</b>과거 추세</div><div><b>10년</b>미래 예측</div><div><b>6대</b>정책 개발</div></div></div></div></section>
+<section id="data" class="card"><h2>1. 활용 가능한 공공데이터</h2><table><tr><th>데이터</th><th>활용 방법</th></tr><tr><td>행정안전부 주민등록 인구통계 / 주민등록 인구 OpenAPI</td><td>시도·시군구·읍면동별 총인구, 남녀 인구, 연령대별 인구를 가져와 도시별 감소 추세를 분석합니다.</td></tr><tr><td>KOSIS 공유서비스 API</td><td>인구총조사, 장래인구, 지역별 인구구조, 인구이동 통계를 불러와 장기 추세 분석에 활용합니다.</td></tr><tr><td>지방소멸위험지수</td><td>일반적으로 <b>20~39세 여성 인구 / 65세 이상 인구</b>로 계산합니다. 0.5 미만이면 소멸위험지역, 0.2 미만이면 소멸고위험지역으로 해석합니다.</td></tr></table><div class="warning">실제 API의 URL, 파라미터명, XML/JSON 태그명은 공공데이터포털 또는 KOSIS 활용가이드에 맞추어 수정해야 합니다. 이 HTML의 코드는 인증키 입력 후 바로 구조를 바꿔 실습할 수 있도록 샘플 데이터 대체 기능을 포함합니다.</div></section>
+<section id="process" class="card"><h2>2. 분석 절차</h2><div class="flow"><div>① API 인증키 입력</div><div>② 지역 인구 데이터 호출</div><div>③ 30년 자료 정리</div><div>④ 소멸위험지수 계산</div><div>⑤ 10년 추세선 예측</div><div>⑥ 정책 개발</div></div></section>
+<section id="code" class="card"><h2>3. 파이썬 전체 코드</h2><button class="copy" onclick="copyCode()">코드 복사</button><pre><code id="pycode"># ============================================================
+# 공공데이터 API 인증키 활용 프로젝트
+# 주제: 지속가능 발전과 대한민국의 소멸 도시
+# 분석: 지난 30년 + 앞으로 10년 추세선, 인사이트, 정책 개발
+# ============================================================
+
+import requests
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# ------------------------------------------------------------
+# 1. 공공데이터 API 인증키 입력
+# ------------------------------------------------------------
+SERVICE_KEY = "여기에_공공데이터_API_인증키를_입력하세요"
+
+# 예시 URL입니다.
+# 실제 수업에서는 공공데이터포털 또는 KOSIS API 활용가이드의 URL로 바꾸세요.
+# 예: 행정안전부 주민등록 인구통계, KOSIS 공유서비스, 지역별 주민등록인구 API 등
+API_URL = "https://apis.data.go.kr/1741000/admmPpltnHhStus/selectAdmmPpltnHhStus"
+
+# 분석할 도시명 예시
+TARGET_CITY = "전라북도 임실군"
+
+# ------------------------------------------------------------
+# 2. 샘플 데이터 생성
+#    실제 API 연동 전에도 수업 실습이 가능하도록 구성
+# ------------------------------------------------------------
+def make_sample_data():
+    years = np.arange(1996, 2026)
+
+    # 총인구: 30년 동안 점진적 감소를 가정한 예시
+    total_population = [
+        42000, 41200, 40500, 39800, 39100,
+        38400, 37700, 36900, 36100, 35200,
+        34300, 33500, 32700, 31900, 31200,
+        30500, 29800, 29100, 28500, 27900,
+        27300, 26800, 26300, 25800, 25300,
+        24800, 24400, 24000, 23600, 23200
+    ]
+
+    # 20~39세 여성 인구: 청년층 유출로 감소
+    women_20_39 = [
+        4200, 4050, 3920, 3780, 3650,
+        3500, 3360, 3210, 3070, 2930,
+        2790, 2660, 2530, 2410, 2300,
+        2190, 2080, 1980, 1890, 1800,
+        1710, 1630, 1560, 1490, 1420,
+        1360, 1300, 1240, 1180, 1130
+    ]
+
+    # 65세 이상 인구: 고령화로 증가
+    elderly_65 = [
+        6200, 6400, 6650, 6900, 7150,
+        7420, 7700, 7980, 8260, 8550,
+        8840, 9130, 9430, 9730, 10020,
+        10300, 10580, 10850, 11100, 11350,
+        11600, 11820, 12020, 12200, 12370,
+        12520, 12650, 12770, 12880, 12980
+    ]
+
+    df = pd.DataFrame({
+        "year": years,
+        "city": TARGET_CITY,
+        "total_population": total_population,
+        "women_20_39": women_20_39,
+        "elderly_65": elderly_65
+    })
+    return df
+
+# ------------------------------------------------------------
+# 3. 공공데이터 API 호출 함수
+# ------------------------------------------------------------
+def fetch_public_data():
+    params = {
+        "serviceKey": SERVICE_KEY,
+        "pageNo": 1,
+        "numOfRows": 1000,
+        "type": "json"
+    }
+
+    try:
+        response = requests.get(API_URL, params=params, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+
+        # 실제 API마다 JSON 구조가 다르므로 아래 부분은 활용가이드에 맞추어 수정합니다.
+        # 필요한 컬럼: year, city, total_population, women_20_39, elderly_65
+        rows = []
+
+        # 예시 파싱 구조
+        items = data.get("items", []) or data.get("response", {}).get("body", {}).get("items", [])
+        for item in items:
+            year = item.get("year") or item.get("stdYear") or item.get("baseYear")
+            city = item.get("city") or item.get("sggNm") or item.get("region")
+            total = item.get("total_population") or item.get("totPop") or item.get("population")
+            women = item.get("women_20_39") or item.get("female20to39")
+            elderly = item.get("elderly_65") or item.get("over65")
+
+            if year and city and total and women and elderly:
+                rows.append({
+                    "year": int(year),
+                    "city": str(city),
+                    "total_population": int(str(total).replace(",", "")),
+                    "women_20_39": int(str(women).replace(",", "")),
+                    "elderly_65": int(str(elderly).replace(",", ""))
+                })
+
+        df = pd.DataFrame(rows)
+        if df.empty:
+            print("API 데이터 구조가 예시와 달라 샘플 데이터를 사용합니다.")
+            return make_sample_data()
+        return df
+
+    except Exception as e:
+        print("API 호출 실패 또는 파싱 실패:", e)
+        print("수업용 샘플 데이터를 사용합니다.")
+        return make_sample_data()
+
+# ------------------------------------------------------------
+# 4. 데이터 준비
+# ------------------------------------------------------------
+df = fetch_public_data()
+df = df[df["city"].str.contains(TARGET_CITY.split()[-1], na=False) | (df["city"] == TARGET_CITY)]
+
+if df.empty:
+    df = make_sample_data()
+
+df = df.dropna().sort_values("year")
+
+# 최근 30년 선택
+current_year = df["year"].max()
+df_30 = df[df["year"] >= current_year - 29].copy()
+
+# 지방소멸위험지수 = 20~39세 여성 인구 / 65세 이상 인구
+df_30["extinction_risk_index"] = df_30["women_20_39"] / df_30["elderly_65"]
+
+# ------------------------------------------------------------
+# 5. 소멸위험 단계 판정 함수
+# ------------------------------------------------------------
+def risk_level(index):
+    if index >= 1.5:
+        return "소멸위험 매우 낮음"
+    elif index >= 1.0:
+        return "소멸위험 보통"
+    elif index >= 0.5:
+        return "주의 단계"
+    elif index >= 0.2:
+        return "소멸위험 진입"
+    else:
+        return "소멸고위험"
+
+df_30["risk_level"] = df_30["extinction_risk_index"].apply(risk_level)
+
+print("최근 30년 분석 데이터")
+print(df_30.tail())
+
+# ------------------------------------------------------------
+# 6. 10년 후 추세선 예측
+# ------------------------------------------------------------
+future_years = np.arange(df_30["year"].min(), current_year + 11)
+future_X = pd.DataFrame({"year": future_years})
+
+models = {}
+predictions = {}
+
+for col in ["total_population", "women_20_39", "elderly_65", "extinction_risk_index"]:
+    X = df_30[["year"]]
+    y = df_30[col]
+    model = LinearRegression()
+    model.fit(X, y)
+    models[col] = model
+    predictions[col] = model.predict(future_X)
+
+future_index = predictions["extinction_risk_index"][-1]
+future_total = predictions["total_population"][-1]
+future_level = risk_level(future_index)
+
+# ------------------------------------------------------------
+# 7. 핵심 인사이트 출력
+# ------------------------------------------------------------
+first_pop = df_30.iloc[0]["total_population"]
+last_pop = df_30.iloc[-1]["total_population"]
+pop_change = (last_pop - first_pop) / first_pop * 100
+
+first_index = df_30.iloc[0]["extinction_risk_index"]
+last_index = df_30.iloc[-1]["extinction_risk_index"]
+index_change = (last_index - first_index) / first_index * 100
+
+print("\n[핵심 인사이트]")
+print(f"분석 지역: {TARGET_CITY}")
+print(f"지난 30년 총인구 변화율: {pop_change:.2f}%")
+print(f"지난 30년 소멸위험지수 변화율: {index_change:.2f}%")
+print(f"현재 소멸위험지수: {last_index:.3f} / 단계: {risk_level(last_index)}")
+print(f"10년 후 예측 총인구: {future_total:,.0f}명")
+print(f"10년 후 예측 소멸위험지수: {future_index:.3f} / 단계: {future_level}")
+
+if future_index < 0.2:
+    print("판단: 10년 후 소멸고위험 단계가 예상되어 강력한 인구·일자리·생활SOC 정책이 필요합니다.")
+elif future_index < 0.5:
+    print("판단: 소멸위험 진입 단계가 지속될 가능성이 있어 청년 정착 정책이 시급합니다.")
+else:
+    print("판단: 아직 회복 가능성이 있으므로 선제 정책으로 위험을 낮출 수 있습니다.")
+
+# ------------------------------------------------------------
+# 8. 시각화
+# ------------------------------------------------------------
+plt.rcParams["font.family"] = "Malgun Gothic"
+plt.rcParams["axes.unicode_minus"] = False
+
+plt.figure(figsize=(12, 7))
+plt.plot(df_30["year"], df_30["total_population"], marker="o", label="실제 총인구")
+plt.plot(future_years, predictions["total_population"], linestyle="--", label="총인구 추세선 및 10년 예측")
+plt.axvline(current_year, linestyle=":", label="현재 기준 연도")
+plt.title(f"{TARGET_CITY} 총인구 30년 추세와 10년 전망")
+plt.xlabel("연도")
+plt.ylabel("총인구")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("population_30years_10future.png", dpi=200)
+plt.show()
+
+plt.figure(figsize=(12, 7))
+plt.plot(df_30["year"], df_30["extinction_risk_index"], marker="o", label="실제 소멸위험지수")
+plt.plot(future_years, predictions["extinction_risk_index"], linestyle="--", label="소멸위험지수 추세선 및 10년 예측")
+plt.axhline(0.5, linestyle=":", label="소멸위험 진입 기준 0.5")
+plt.axhline(0.2, linestyle=":", label="소멸고위험 기준 0.2")
+plt.axvline(current_year, linestyle=":", label="현재 기준 연도")
+plt.title(f"{TARGET_CITY} 지방소멸위험지수 30년 추세와 10년 전망")
+plt.xlabel("연도")
+plt.ylabel("소멸위험지수")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("extinction_risk_index_trend.png", dpi=200)
+plt.show()
+
+# ------------------------------------------------------------
+# 9. 정책 개발안
+# ------------------------------------------------------------
+policies = [
+    "청년 정착 패키지: 주거비, 지역 일자리, 창업 공간, 교통비를 묶어 지원",
+    "생활인구 확대: 워케이션, 체류형 관광, 관계인구 등록제를 통한 정기 방문 유도",
+    "교육 지속가능성: 작은 학교 특성화, 온라인 공동교육과정, 지역 대학 연계 강화",
+    "돌봄·의료 접근성 개선: 고령층 방문진료, 응급교통, 스마트 건강관리 확대",
+    "지역 산업 전환: 농생명, 재생에너지, 기후테크, 로컬푸드 산업 육성",
+    "공공데이터 대시보드: 인구, 일자리, 빈집, 교통, 의료 지표를 매년 공개"
+]
+
+print("\n[정책 개발안]")
+for i, p in enumerate(policies, start=1):
+    print(f"{i}. {p}")
+</code></pre></section>
+<section id="insight" class="card"><h2>4. 인사이트 도출</h2><div class="danger"><b>인사이트 1. 지방소멸은 총인구 감소보다 인구구조 붕괴가 더 중요합니다.</b><br>총인구가 천천히 줄어도 20~39세 여성 인구가 빠르게 줄고 65세 이상 인구가 늘면 소멸위험지수는 급격히 악화됩니다.</div><div class="insight"><b>인사이트 2. 지속가능 발전은 청년 정착과 고령사회 대응을 동시에 요구합니다.</b><br>청년층만 지원하거나 고령층 복지만 확대하는 단일 정책으로는 도시의 지속가능성을 회복하기 어렵습니다.</div><div class="insight"><b>인사이트 3. 생활인구와 관계인구가 새로운 해법이 될 수 있습니다.</b><br>정주인구가 바로 늘지 않더라도 체류형 관광, 워케이션, 지역 창업, 주말 거주를 늘리면 지역 경제와 공동체가 유지될 수 있습니다.</div><div class="danger"><b>인사이트 4. 10년 예측선은 정책 개입의 마감 시간을 보여줍니다.</b><br>추세선이 0.2에 가까워지면 소멸고위험 단계로 진입할 수 있으므로, 지금부터 주거·일자리·교육·의료 정책을 묶어 실행해야 합니다.</div></section>
+<section id="policy" class="card"><h2>5. 관련 정책 개발안</h2><div class="policy"><div><h3>정책 1. 청년 정착 패키지</h3><p>월세 지원, 지역기업 채용 연계, 창업 실험 공간, 교통비 지원을 하나로 묶어 청년이 실제로 살아볼 수 있는 조건을 만듭니다.</p></div><div><h3>정책 2. 생활인구 확대 전략</h3><p>워케이션 센터, 체류형 관광, 귀촌 체험, 관계인구 멤버십을 운영해 정주인구 감소를 보완합니다.</p></div><div><h3>정책 3. 작은 학교 지속가능 모델</h3><p>지역 특화 교육과정, 온라인 공동교육과정, 대학·기업 멘토링을 통해 학생 수 감소에도 교육 품질을 유지합니다.</p></div><div><h3>정책 4. 고령 친화 생활권</h3><p>방문 진료, 응급 이동지원, 스마트 돌봄, 마을 단위 건강관리로 고령 인구가 안전하게 살 수 있는 도시를 만듭니다.</p></div><div><h3>정책 5. 지역 산업 전환</h3><p>농생명, 재생에너지, 기후테크, 로컬푸드, 지역문화 콘텐츠를 연계하여 청년 일자리를 만듭니다.</p></div><div><h3>정책 6. 지방소멸 데이터 대시보드</h3><p>인구, 출생, 이동, 빈집, 일자리, 의료, 교통 지표를 매년 공개하고 정책 효과를 데이터로 평가합니다.</p></div></div></section>
+<section id="activity" class="card"><h2>6. 수업 활동 문항</h2><ol><li>지방소멸위험지수가 총인구보다 더 민감한 지표가 될 수 있는 이유를 설명하시오.</li><li>공공데이터 API 인증키가 필요한 이유와 API 활용의 장점을 쓰시오.</li><li>지난 30년 추세선과 앞으로 10년 예측선을 비교해야 하는 이유를 설명하시오.</li><li>소멸위험 도시를 살리기 위해 가장 효과적인 정책 1가지를 선택하고 근거를 제시하시오.</li><li>생활인구, 관계인구, 정주인구의 차이를 조사하고 지역 정책과 연결해 설명하시오.</li></ol></section>
+<footer>공공데이터 API · 지속가능 발전 · 대한민국의 소멸 도시 · 30년 추세 분석 · 10년 미래 예측 · 정책 개발 포스터</footer>
+</body></html>

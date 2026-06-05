@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공공데이터 API 활용 지속가능 발전과 대한민국의 미래</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans KR','Malgun Gothic',Arial,sans-serif;background:#eef4f8;color:#17252f;line-height:1.75}header{background:linear-gradient(135deg,#003049,#0a9396,#94d2bd);color:white;text-align:center;padding:48px 24px}header h1{font-size:39px;margin:0;font-weight:900}header p{max-width:1000px;margin:14px auto 0;font-size:18px}nav{position:sticky;top:0;z-index:20;background:#ffffffee;border-bottom:1px solid #cfe2e8;text-align:center;padding:12px}nav a{display:inline-block;text-decoration:none;color:#003049;background:#e7f5f4;border-radius:999px;padding:8px 14px;margin:4px;font-weight:800}section{max-width:1180px;margin:28px auto;padding:0 18px}.card{background:white;border:1px solid #d8e8ed;border-radius:24px;padding:27px;margin:24px 0;box-shadow:0 8px 22px rgba(0,48,73,.10)}h2{color:#005f73;font-size:29px;margin-top:0}h3{color:#0a9396}.poster{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}.big{font-size:48px;font-weight:900;line-height:1.15;color:#003049;margin:18px 0}.badge{display:inline-block;background:#0a9396;color:white;border-radius:999px;padding:6px 13px;margin:4px;font-weight:900}.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:18px}.kpi div{background:#f0fbfa;border:1px solid #cdecea;border-radius:17px;padding:17px;text-align:center;font-weight:700}.kpi b{display:block;font-size:28px;color:#005f73}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.flow div{background:#f5fcff;border-left:7px solid #0a9396;border-radius:15px;padding:15px;font-weight:800}table{width:100%;border-collapse:collapse}th,td{border:1px solid #d4e5ea;padding:11px;text-align:left}th{background:#e7f5f4;color:#003049}pre{background:#18252b;color:#e8fbff;border-radius:18px;padding:18px;overflow:auto;font-size:14px;line-height:1.55}code{font-family:Consolas,Menlo,monospace}.copy{border:0;background:#005f73;color:white;padding:10px 16px;border-radius:11px;font-weight:900;cursor:pointer}.policy{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.policy div{background:#f8feff;border:1px solid #d7edf0;border-radius:18px;padding:18px}.warning{background:#fff7df;border-left:8px solid #ee9b00;border-radius:13px;padding:16px}.activity li{margin:8px 0}footer{text-align:center;padding:34px;color:#52656b}@media(max-width:850px){.poster,.policy{grid-template-columns:1fr}.flow,.kpi{grid-template-columns:1fr}header h1{font-size:30px}.big{font-size:36px}}
+</style>
+<script>function copyCode(){const text=document.getElementById('pycode').innerText;navigator.clipboard.writeText(text);alert('파이썬 코드가 복사되었습니다.');}</script>
+</head>
+<body>
+<header><h1>공공데이터 API로 분석하는 지속가능 발전과 대한민국의 미래</h1><p>지난 20년의 데이터를 읽고, 앞으로 10년의 추세선을 그리며, 대한민국의 미래를 위한 정책을 개발하는 데이터 분석 프로젝트</p></header>
+<nav><a href="#poster">포스터</a><a href="#topic">주제</a><a href="#data">데이터</a><a href="#process">분석 절차</a><a href="#code">파이썬 코드</a><a href="#insight">인사이트</a><a href="#policy">정책</a></nav>
+<section id="poster" class="card"><div class="poster"><div><span class="badge">공공데이터 API</span><span class="badge">SDGs</span><span class="badge">대한민국 미래</span><p class="big">숫자로 읽는<br>대한민국의 지속가능한 내일</p><p>온실가스, 에너지, 인구, 지역, 산업 데이터를 분석하면 대한민국이 어떤 미래로 가고 있는지 예측할 수 있습니다. 데이터는 정책의 출발점입니다.</p></div><div class="card" style="margin:0;background:#f2fbfd"><h2>탐구 질문</h2><p><b>Q1.</b> 지난 20년 동안 지속가능성 지표는 어떻게 변했는가?</p><p><b>Q2.</b> 현재 추세가 10년 더 이어지면 대한민국의 미래는 어떤 모습인가?</p><p><b>Q3.</b> 정부·학교·지역사회는 어떤 정책을 개발해야 하는가?</p><div class="kpi"><div><b>20년</b>과거 추세 분석</div><div><b>10년</b>미래 예측</div><div><b>6대</b>정책 개발</div></div></div></div></section>
+<section id="topic" class="card"><h2>1. 프로젝트 주제</h2><table><tr><th>구분</th><th>내용</th></tr><tr><td>대주제</td><td>지속가능 발전과 대한민국의 미래</td></tr><tr><td>권장 지표</td><td>온실가스 배출량, 재생에너지 비중, 전력 사용량, 인구구조, 미세먼지, 지역 일자리</td></tr><tr><td>분석 범위</td><td>지난 20년 자료 + 앞으로 10년 추세선</td></tr><tr><td>분석 도구</td><td>공공데이터 API, pandas, matplotlib, scikit-learn 선형회귀</td></tr><tr><td>결과물</td><td>추세선 그래프, 인사이트, 정책 개발안, 공공데이터 활용 포스터</td></tr></table></section>
+<section id="data" class="card"><h2>2. 활용 가능한 공공데이터 예시</h2><ul><li><b>환경:</b> 온실가스 배출량, 대기오염, 미세먼지, 에너지 소비량</li><li><b>에너지:</b> 전력 사용량, 신재생에너지 발전량, 지역별 에너지 자립률</li><li><b>사회:</b> 인구 변화, 고령화율, 청년 인구, 지역 소멸 위험</li><li><b>경제:</b> 지역별 일자리, 산업 구조, 녹색산업 성장 지표</li></ul><div class="warning">아래 코드는 수업용 범용 템플릿입니다. 실제 API의 URL, 파라미터명, XML 태그명은 공공데이터포털 활용가이드에 맞추어 수정해야 합니다. 인증키가 없거나 API 호출이 실패하면 샘플 데이터로 그래프와 정책 개발 과정을 실습합니다.</div></section>
+<section id="process" class="card"><h2>3. 분석 절차</h2><div class="flow"><div>① API 인증키 입력</div><div>② 공공데이터 호출</div><div>③ 20년 자료 정리</div><div>④ 10년 추세선 예측</div><div>⑤ 정책 개발</div></div></section>
+<section id="code" class="card"><h2>4. 파이썬 전체 코드</h2><button class="copy" onclick="copyCode()">코드 복사</button><pre><code id="pycode"># ============================================================
+# 공공데이터 API 인증키 활용 프로젝트
+# 주제: 지속가능 발전과 대한민국의 미래
+# 분석: 지난 20년 + 앞으로 10년 추세선, 인사이트, 정책 개발
+# ============================================================
+
+import requests
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from xml.etree import ElementTree as ET
+from sklearn.linear_model import LinearRegression
+
+SERVICE_KEY = "여기에_공공데이터_API_인증키를_입력하세요"
+API_URL = "https://apis.data.go.kr/B551177/AirportGreenGas/getGreenGasInfo"
+
+def fetch_public_data():
+    params = {"serviceKey": SERVICE_KEY, "pageNo": 1, "numOfRows": 100, "type": "xml"}
+    try:
+        response = requests.get(API_URL, params=params, timeout=10)
+        response.raise_for_status()
+        root = ET.fromstring(response.content)
+        rows = []
+        for item in root.iter("item"):
+            year = item.findtext("year") or item.findtext("stdYear") or item.findtext("baseYear") or item.findtext("yr")
+            value = item.findtext("emission") or item.findtext("ghgEmis") or item.findtext("totEmis") or item.findtext("value")
+            if year and value:
+                rows.append({"year": int(year), "value": float(str(value).replace(",", ""))})
+        df = pd.DataFrame(rows)
+        if df.empty:
+            return make_sample_data()
+        return df
+    except Exception as e:
+        print("API 호출 또는 XML 파싱 실패:", e)
+        print("수업용 샘플 데이터를 사용합니다.")
+        return make_sample_data()
+
+def make_sample_data():
+    years = np.arange(2006, 2026)
+    # 값이 높을수록 지속가능성 위험이 크다고 가정한 수업용 예시 지표
+    values = [62,64,66,69,71,73,75,76,78,79,81,82,80,79,77,75,73,71,69,67]
+    return pd.DataFrame({"year": years, "value": values})
+
+df = fetch_public_data()
+df = df.dropna().sort_values("year")
+current_year = df["year"].max()
+df_20 = df[df["year"] >= current_year - 19].copy()
+
+X = df_20[["year"]]
+y = df_20["value"]
+model = LinearRegression()
+model.fit(X, y)
+
+future_years = np.arange(df_20["year"].min(), current_year + 11)
+future_X = pd.DataFrame({"year": future_years})
+predicted = model.predict(future_X)
+
+first_value = df_20.iloc[0]["value"]
+last_value = df_20.iloc[-1]["value"]
+future_value = predicted[-1]
+past_change_rate = (last_value - first_value) / first_value * 100
+future_change_rate = (future_value - last_value) / last_value * 100
+
+print("[핵심 인사이트]")
+print(f"지난 20년 변화율: {past_change_rate:.2f}%")
+print(f"현재 값: {last_value:.2f}")
+print(f"10년 후 예측값: {future_value:.2f}")
+print(f"현재 대비 10년 후 예측 변화율: {future_change_rate:.2f}%")
+
+if future_change_rate > 0:
+    print("판단: 현재 추세가 이어지면 지속가능성 위험이 커질 수 있습니다.")
+else:
+    print("판단: 현재 추세가 이어지면 지속가능성 위험이 완화될 가능성이 있습니다.")
+
+plt.rcParams["font.family"] = "Malgun Gothic"
+plt.rcParams["axes.unicode_minus"] = False
+plt.figure(figsize=(12, 7))
+plt.plot(df_20["year"], df_20["value"], marker="o", linewidth=2, label="실제 지표")
+plt.plot(future_years, predicted, linestyle="--", linewidth=2, label="추세선 및 10년 예측")
+plt.axvline(current_year, linestyle=":", label="현재 기준 연도")
+plt.title("지속가능 발전과 대한민국의 미래: 20년 추세와 10년 전망")
+plt.xlabel("연도")
+plt.ylabel("지속가능 미래지표")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("korea_sustainable_future_trend.png", dpi=200)
+plt.show()
+
+policies = [
+    "탄소중립 전환 가속 정책",
+    "미래세대 인구·교육 정책",
+    "지역균형 지속가능 도시 정책",
+    "데이터 공개형 정책 평가",
+    "학교 참여형 지속가능 프로젝트",
+    "녹색산업 일자리 육성 정책"
+]
+print("\n[정책 개발안]")
+for i, policy in enumerate(policies, start=1):
+    print(f"{i}. {policy}")</code></pre></section>
+<section id="insight" class="card"><h2>5. 도출할 수 있는 인사이트</h2><ol><li><b>미래는 현재 추세의 연장선이다.</b> 20년 추세가 개선되지 않으면 10년 뒤 위험이 커질 수 있습니다.</li><li><b>지속가능 발전은 환경만의 문제가 아니다.</b> 에너지, 인구, 지역, 산업 정책이 함께 연결되어야 합니다.</li><li><b>정책은 데이터로 검증되어야 한다.</b> 매년 지표를 공개하고 정책 효과를 수치로 확인해야 합니다.</li><li><b>학교 교육도 미래 정책의 일부이다.</b> 학생이 공공데이터를 분석하면 지역 문제 해결 역량이 커집니다.</li></ol></section>
+<section id="policy" class="card"><h2>6. 대한민국의 미래를 위한 정책 개발안</h2><div class="policy"><div><h3>정책 1. 탄소중립 전환 가속</h3><p>공공건물 에너지 효율 개선, 재생에너지 설비 확대, 산업 공정 저탄소화를 동시에 추진합니다.</p></div><div><h3>정책 2. 미래세대 인구·교육 정책</h3><p>저출생·고령화에 대응하여 돌봄, 교육, 청년 일자리, 지역 정주 여건을 함께 개선합니다.</p></div><div><h3>정책 3. 지역균형 지속가능 도시</h3><p>지역별 친환경 산업, 대중교통, 생활 SOC를 확충하여 수도권 집중을 완화합니다.</p></div><div><h3>정책 4. 공공데이터 기반 정책 평가</h3><p>온실가스, 에너지, 인구, 일자리 지표를 대시보드로 공개하고 정책 효과를 매년 평가합니다.</p></div><div><h3>정책 5. 학교 참여형 지속가능 프로젝트</h3><p>학생들이 공공데이터 API를 활용해 지역 문제를 분석하고 포스터·정책 제안서를 제작하도록 지원합니다.</p></div><div><h3>정책 6. 녹색산업 일자리 육성</h3><p>재생에너지, 전기차, 스마트그리드, 탄소포집, 기후테크 분야의 미래 일자리를 확대합니다.</p></div></div></section>
+<section class="card activity"><h2>7. 수업 활동 문항</h2><ol><li>지속가능 발전을 판단할 수 있는 공공데이터 지표 3가지를 쓰시오.</li><li>지난 20년 추세와 앞으로 10년 예측을 비교해야 하는 이유를 설명하시오.</li><li>선형회귀 추세선의 장점과 한계를 각각 쓰시오.</li><li>대한민국의 미래를 위해 가장 시급한 정책 1가지를 고르고 근거를 제시하시오.</li><li>공공데이터 API를 활용하면 시민 참여 정책 개발에 어떤 장점이 있는지 쓰시오.</li></ol></section>
+<footer>공공데이터 API · 지속가능 발전 · 대한민국의 미래 · 파이썬 추세 분석 · 정책 개발 포스터</footer>
+</body></html>
