@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공공데이터 API 활용 지속가능발전 포스터</title>
+<style>
+body{margin:0;font-family:'Noto Sans KR',Arial,sans-serif;background:#eef6f0;color:#173524;line-height:1.7}
+header{background:linear-gradient(135deg,#0f5132,#198754,#6bbf59);color:white;padding:44px 24px;text-align:center}
+header h1{font-size:38px;margin:0;font-weight:900}
+header p{max-width:960px;margin:14px auto 0;font-size:18px}
+nav{position:sticky;top:0;background:#ffffffee;border-bottom:1px solid #cfe8d8;padding:12px;text-align:center;z-index:10}
+nav a{display:inline-block;margin:4px 7px;padding:8px 14px;border-radius:999px;background:#e3f4e8;color:#0f5132;text-decoration:none;font-weight:700}
+section{max-width:1180px;margin:28px auto;padding:0 18px}
+.card{background:white;border-radius:22px;padding:26px;margin:22px 0;box-shadow:0 8px 22px rgba(15,81,50,.12);border:1px solid #d6eadc}
+h2{font-size:28px;color:#0f5132;margin-top:0}
+h3{color:#145a32}
+.poster{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch}
+.big{font-size:48px;font-weight:900;line-height:1.15;color:#0f5132}
+.badge{display:inline-block;background:#198754;color:white;border-radius:999px;padding:5px 12px;font-weight:800;margin:4px}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.kpi div{background:#f1fbf4;border:1px solid #cfe8d8;border-radius:16px;padding:16px;text-align:center}
+.kpi b{display:block;font-size:26px;color:#198754}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.flow div{background:#f6fff8;border-left:6px solid #198754;border-radius:14px;padding:14px;font-weight:700}
+pre{background:#1f2a24;color:#eaffef;padding:18px;border-radius:16px;overflow:auto;font-size:14px;line-height:1.55}
+code{font-family:Consolas,Menlo,monospace}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{border:1px solid #d7eadc;padding:10px;text-align:left}
+th{background:#e5f5ea;color:#0f5132}
+.policy{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.policy div{background:#f7fff9;border:1px solid #d4eadb;border-radius:16px;padding:16px}
+.copy{border:0;background:#0f5132;color:white;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer}
+.warning{background:#fff8e1;border-left:7px solid #ffb300;padding:16px;border-radius:12px}
+footer{text-align:center;padding:34px;color:#4f6b59}
+@media(max-width:850px){.poster,.policy{grid-template-columns:1fr}.flow,.kpi{grid-template-columns:1fr}header h1{font-size:30px}.big{font-size:36px}}
+</style>
+<script>
+function copyCode(){
+  const text = document.getElementById('pycode').innerText;
+  navigator.clipboard.writeText(text);
+  alert('파이썬 코드가 복사되었습니다.');
+}
+</script>
+</head>
+<body>
+<header>
+  <h1>공공데이터 API로 그리는 지속가능발전의 미래</h1>
+  <p>SDG 13 기후행동 · 온실가스 배출량 20년 추세 분석 · 10년 후 전망 · 데이터 기반 정책 개발</p>
+</header>
+<nav>
+  <a href="#poster">포스터</a><a href="#topic">주제 선정</a><a href="#process">분석 절차</a><a href="#code">파이썬 코드</a><a href="#insight">인사이트</a><a href="#policy">정책 개발</a>
+</nav>
+<section id="poster" class="card">
+  <div class="poster">
+    <div>
+      <span class="badge">공공데이터 API</span><span class="badge">지속가능발전</span><span class="badge">SDG 13</span>
+      <p class="big">데이터가 말하는<br>탄소중립의 골든타임</p>
+      <p>지난 20년의 온실가스 배출량을 분석하고 앞으로 10년의 추세선을 그리면, 우리 지역과 기관이 어떤 정책을 우선해야 하는지 더 명확하게 판단할 수 있습니다.</p>
+    </div>
+    <div class="card" style="margin:0;background:#f6fff8">
+      <h2>핵심 질문</h2>
+      <p><b>Q1.</b> 배출량은 줄고 있는가, 늘고 있는가?</p>
+      <p><b>Q2.</b> 현재 추세가 10년 더 이어지면 어떤 미래가 오는가?</p>
+      <p><b>Q3.</b> 학생·학교·지자체가 실행할 정책은 무엇인가?</p>
+      <div class="kpi"><div><b>20년</b>과거 추세</div><div><b>10년</b>미래 전망</div><div><b>6개</b>정책 제안</div></div>
+    </div>
+  </div>
+</section>
+<section id="topic" class="card">
+  <h2>1. 예제 주제 선정</h2>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>지속가능발전 목표</td><td>SDG 13 기후행동</td></tr>
+    <tr><td>분석 주제</td><td>공공기관 또는 공항의 온실가스 배출량 추세 분석</td></tr>
+    <tr><td>활용 데이터</td><td>공공데이터포털 온실가스 배출량 관련 OpenAPI 또는 파일 데이터</td></tr>
+    <tr><td>분석 기간</td><td>지난 20년 자료 + 앞으로 10년 예측</td></tr>
+    <tr><td>분석 방법</td><td>pandas 데이터 정리, scikit-learn 선형회귀, matplotlib 시각화</td></tr>
+  </table>
+  <div class="warning">실제 API의 URL, XML 태그명, 파라미터명은 공공데이터포털의 각 API 활용가이드에 따라 조금씩 다릅니다. 아래 코드는 인증키와 태그명만 수정하면 수업 실습에 사용할 수 있도록 작성되었습니다.</div>
+</section>
+<section id="process" class="card">
+  <h2>2. 분석 절차</h2>
+  <div class="flow"><div>① API 인증키 발급</div><div>② 배출량 데이터 호출</div><div>③ 20년 자료 정리</div><div>④ 10년 추세선 예측</div><div>⑤ 정책 제안 도출</div></div>
+</section>
+<section id="code" class="card">
+  <h2>3. 파이썬 전체 코드</h2>
+  <button class="copy" onclick="copyCode()">코드 복사</button>
+  <pre><code id="pycode"># 지속가능발전 SDG 13 기후행동 프로젝트
+# 공공데이터 API 인증키를 활용한 온실가스 배출량 추세 분석
+
+import requests
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from xml.etree import ElementTree as ET
+from sklearn.linear_model import LinearRegression
+
+SERVICE_KEY = &quot;여기에_공공데이터_API_인증키를_입력하세요&quot;
+API_URL = &quot;https://apis.data.go.kr/B551177/AirportGreenGas/getGreenGasInfo&quot;
+
+def make_sample_data():
+    years = np.arange(2006, 2026)
+    emissions = [115,118,121,126,130,133,136,139,141,143,
+                 146,148,147,145,142,139,135,132,128,125]
+    return pd.DataFrame({&quot;year&quot;: years, &quot;emission&quot;: emissions})
+
+def fetch_public_data(service_key):
+    params = {
+        &quot;serviceKey&quot;: service_key,
+        &quot;numOfRows&quot;: 100,
+        &quot;pageNo&quot;: 1,
+        &quot;type&quot;: &quot;xml&quot;
+    }
+    try:
+        response = requests.get(API_URL, params=params, timeout=10)
+        response.raise_for_status()
+        root = ET.fromstring(response.content)
+        rows = []
+
+        for item in root.iter(&quot;item&quot;):
+            year_text = item.findtext(&quot;year&quot;) or item.findtext(&quot;stdYear&quot;) or item.findtext(&quot;baseYear&quot;)
+            emission_text = item.findtext(&quot;emission&quot;) or item.findtext(&quot;ghgEmis&quot;) or item.findtext(&quot;totEmis&quot;)
+
+            if year_text and emission_text:
+                rows.append({
+                    &quot;year&quot;: int(year_text),
+                    &quot;emission&quot;: float(str(emission_text).replace(&quot;,&quot;, &quot;&quot;))
+                })
+
+        df = pd.DataFrame(rows)
+        if df.empty:
+            return make_sample_data()
+        return df
+
+    except Exception as e:
+        print(&quot;API 호출 또는 파싱 실패:&quot;, e)
+        print(&quot;수업 실습용 샘플 데이터를 사용합니다.&quot;)
+        return make_sample_data()
+
+df = fetch_public_data(SERVICE_KEY)
+df = df.dropna().sort_values(&quot;year&quot;)
+
+current_year = df[&quot;year&quot;].max()
+df_20 = df[df[&quot;year&quot;] &gt;= current_year - 19].copy()
+
+X = df_20[[&quot;year&quot;]]
+y = df_20[&quot;emission&quot;]
+
+model = LinearRegression()
+model.fit(X, y)
+
+future_years = np.arange(df_20[&quot;year&quot;].min(), current_year + 11)
+future_X = pd.DataFrame({&quot;year&quot;: future_years})
+predicted = model.predict(future_X)
+
+first_value = df_20.iloc[0][&quot;emission&quot;]
+last_value = df_20.iloc[-1][&quot;emission&quot;]
+change_rate = (last_value - first_value) / first_value * 100
+future_10_value = predicted[-1]
+future_change = (future_10_value - last_value) / last_value * 100
+
+print(&quot;[핵심 인사이트]&quot;)
+print(f&quot;지난 20년 변화율: {change_rate:.2f}%&quot;)
+print(f&quot;10년 후 예측 배출량: {future_10_value:.2f}&quot;)
+print(f&quot;현재 대비 10년 후 예측 변화율: {future_change:.2f}%&quot;)
+
+if future_change &gt; 0:
+    print(&quot;판단: 현재 추세가 이어지면 배출량 증가 위험이 있습니다.&quot;)
+else:
+    print(&quot;판단: 현재 추세가 이어지면 배출량 감소 가능성이 있습니다.&quot;)
+
+plt.rcParams[&quot;font.family&quot;] = &quot;Malgun Gothic&quot;
+plt.rcParams[&quot;axes.unicode_minus&quot;] = False
+
+plt.figure(figsize=(12, 7))
+plt.plot(df_20[&quot;year&quot;], df_20[&quot;emission&quot;], marker=&quot;o&quot;, label=&quot;실제 배출량&quot;)
+plt.plot(future_years, predicted, linestyle=&quot;--&quot;, label=&quot;추세선 및 10년 예측&quot;)
+plt.axvline(current_year, linestyle=&quot;:&quot;, label=&quot;현재 기준 연도&quot;)
+plt.title(&quot;지속가능발전 SDG 13: 온실가스 배출량 20년 추세와 10년 전망&quot;)
+plt.xlabel(&quot;연도&quot;)
+plt.ylabel(&quot;온실가스 배출량&quot;)
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(&quot;sdg13_greenhouse_trend.png&quot;, dpi=200)
+plt.show()
+
+policies = [
+    &quot;공공기관 건물 에너지 효율 등급 개선&quot;,
+    &quot;태양광·지열 등 재생에너지 설비 확대&quot;,
+    &quot;전기차·수소차 등 저탄소 교통수단 전환&quot;,
+    &quot;배출량 공개 대시보드 구축&quot;,
+    &quot;탄소 감축 실적에 따른 예산 인센티브 제공&quot;,
+    &quot;학생·시민 참여형 탄소 모니터링 프로젝트 운영&quot;
+]
+
+print(&quot;\n[정책 제안]&quot;)
+for i, policy in enumerate(policies, start=1):
+    print(f&quot;{i}. {policy}&quot;)
+</code></pre>
+</section>
+<section id="insight" class="card">
+  <h2>4. 도출 가능한 인사이트</h2>
+  <ol>
+    <li><b>추세가 증가한다면</b> 현재 정책만으로는 탄소중립 목표 달성이 어렵다는 신호입니다.</li>
+    <li><b>추세가 감소한다면</b> 기존 감축 정책의 효과를 확인하고, 감축 속도를 더 높일 필요가 있습니다.</li>
+    <li><b>10년 후 예측치가 높게 나온다면</b> 건물 에너지, 교통, 전력 사용 부문의 구조적 개선이 필요합니다.</li>
+    <li><b>데이터 공개가 꾸준할수록</b> 학생·시민·정책 담당자가 같은 근거로 토론할 수 있습니다.</li>
+  </ol>
+</section>
+<section id="policy" class="card">
+  <h2>5. 관련 정책 개발안</h2>
+  <div class="policy">
+    <div><h3>정책 1. 공공건물 에너지 효율 개선</h3><p>노후 조명 LED 교체, 단열 개선, 냉난방 자동제어로 전력 사용량을 줄입니다.</p></div>
+    <div><h3>정책 2. 재생에너지 설비 확대</h3><p>학교·공공기관 옥상 태양광, 지열 냉난방, ESS 저장장치를 단계적으로 도입합니다.</p></div>
+    <div><h3>정책 3. 저탄소 교통 전환</h3><p>공공기관 차량을 전기차·수소차로 전환하고, 통근버스와 대중교통 연계를 강화합니다.</p></div>
+    <div><h3>정책 4. 탄소 데이터 대시보드</h3><p>기관별 배출량, 전년 대비 증감률, 감축 목표 달성률을 시각화하여 공개합니다.</p></div>
+    <div><h3>정책 5. 예산 인센티브</h3><p>감축 목표를 달성한 기관에는 시설 개선 예산과 친환경 인증 가점을 제공합니다.</p></div>
+    <div><h3>정책 6. 학생 참여형 탄소 모니터링</h3><p>정보 수업에서 API 분석 프로젝트를 수행하고, 학생들이 직접 정책 포스터를 제작합니다.</p></div>
+  </div>
+</section>
+<section class="card">
+  <h2>6. 수업 활동지 문항</h2>
+  <ol>
+    <li>API 인증키가 필요한 이유를 설명하시오.</li>
+    <li>지난 20년 배출량 변화율을 계산하는 코드의 핵심 부분을 찾으시오.</li>
+    <li>선형회귀 추세선의 한계를 2가지 이상 쓰시오.</li>
+    <li>온실가스 감축을 위해 학교에서 실천할 수 있는 정책을 3가지 제안하시오.</li>
+    <li>데이터 기반 정책이 감으로 만든 정책보다 나은 이유를 쓰시오.</li>
+  </ol>
+</section>
+<footer>공공데이터 활용 · 지속가능발전 · 파이썬 데이터 분석 · 정책 개발 포스터 HTML</footer>
+</body>
+</html>
