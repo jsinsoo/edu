@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>대한민국 소멸위험도 분석 앱</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *{box-sizing:border-box} body{margin:0;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f4f7fb;color:#1f2937}
+  header{background:linear-gradient(135deg,#1e3a8a,#0f766e);color:white;padding:34px 24px;text-align:center}
+  header h1{margin:0;font-size:34px} header p{font-size:18px;margin:12px 0 0;color:#e0f2fe}
+  nav{position:sticky;top:0;background:white;border-bottom:1px solid #ddd;z-index:10;padding:12px;text-align:center}
+  nav a{display:inline-block;margin:5px;padding:9px 14px;border-radius:20px;background:#eef2ff;color:#1e3a8a;text-decoration:none;font-weight:bold}
+  section{max-width:1200px;margin:24px auto;padding:0 18px}
+  .card{background:white;border-radius:18px;padding:24px;margin-bottom:22px;box-shadow:0 8px 24px rgba(15,23,42,.08)}
+  h2{color:#1e3a8a;margin-top:0;border-left:7px solid #0f766e;padding-left:12px}
+  h3{color:#0f766e}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:18px}.box strong{color:#1e40af}
+  label{font-weight:bold;display:block;margin-top:12px} input,select,button,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #cbd5e1;margin-top:7px;font-size:15px}
+  button{background:#1e3a8a;color:white;font-weight:bold;cursor:pointer;border:none}button:hover{background:#0f766e}
+  .result{font-size:18px;line-height:1.8}.risk-low{color:#15803d;font-weight:bold}.risk-mid{color:#d97706;font-weight:bold}.risk-high{color:#dc2626;font-weight:bold}.risk-extreme{color:#7f1d1d;font-weight:bold}
+  pre{background:#0f172a;color:#e5e7eb;padding:18px;border-radius:14px;overflow:auto;white-space:pre-wrap}.tag{display:inline-block;background:#dcfce7;color:#166534;padding:5px 10px;border-radius:999px;margin:3px;font-weight:bold}
+  table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #e5e7eb;padding:10px;text-align:center}th{background:#e0f2fe}
+  footer{text-align:center;padding:30px;color:#64748b}.small{font-size:13px;color:#64748b}.warn{background:#fff7ed;border-left:6px solid #f97316;padding:14px;border-radius:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>대한민국 소멸위험도 분석 앱</h1>
+  <p>공공데이터포털 API 인증키를 활용한 정보·데이터과학 프로젝트</p>
+</header>
+<nav>
+  <a href="#intro">프로젝트 개요</a><a href="#api">사용 API</a><a href="#app">분석 앱</a><a href="#chart">추세선</a><a href="#policy">정책 제안</a><a href="#code">파이썬 코드</a>
+</nav>
+<section id="intro" class="card">
+  <h2>1. 프로젝트 개요</h2>
+  <p>이 앱은 시군구별 인구 변화, 청년 인구, 출생률, 사망률 데이터를 분석하여 지역 소멸위험도를 계산하고 10년 후 인구 변화를 예측하는 학습용 웹앱입니다.</p>
+  <div class="grid">
+    <div class="box"><strong>분석 대상</strong><br>시군구별 인구 감소</div>
+    <div class="box"><strong>핵심 지표</strong><br>청년 인구, 고령 인구, 출생·사망</div>
+    <div class="box"><strong>예측 목표</strong><br>10년 후 인구와 위험도</div>
+    <div class="box"><strong>결과 활용</strong><br>정책 제안, 지도 시각화</div>
+  </div>
+</section>
+<section id="api" class="card">
+  <h2>2. 사용 가능한 공공데이터 API</h2>
+  <table>
+    <tr><th>API</th><th>활용 데이터</th><th>분석 목적</th></tr>
+    <tr><td>통계청 KOSIS</td><td>인구, 출생률, 사망률, 고령화율</td><td>장기 인구 추세 분석</td></tr>
+    <tr><td>주민등록인구통계</td><td>시군구별 주민등록 인구</td><td>지역별 인구 감소 파악</td></tr>
+    <tr><td>지방행정인허가 데이터</td><td>상권, 병원, 학교, 생활시설</td><td>생활 인프라 변화 분석</td></tr>
+  </table>
+  <div class="warn"><b>수업용 안내:</b> 실제 API 호출은 인증키와 세부 URL이 필요하므로, 이 HTML은 기본적으로 샘플 데이터로 작동합니다. 인증키를 입력하면 프로젝트 설계서에 활용할 수 있습니다.</div>
+</section>
+<section id="app" class="card">
+  <h2>3. 소멸위험도 분석 앱</h2>
+  <div class="grid">
+    <div>
+      <label>공공데이터포털 API 인증키</label>
+      <input id="apiKey" placeholder="예: 발급받은 일반 인증키 입력" />
+      <label>분석 지역</label>
+      <select id="region">
+        <option value="임실군">전북 임실군</option><option value="진안군">전북 진안군</option><option value="무주군">전북 무주군</option><option value="장수군">전북 장수군</option><option value="전주시">전북 전주시</option>
+      </select>
+      <label>현재 총인구</label><input id="population" type="number" value="26000" />
+      <label>20~39세 여성 인구</label><input id="youngWomen" type="number" value="2300" />
+      <label>65세 이상 인구</label><input id="oldPeople" type="number" value="9800" />
+      <label>연평균 인구 감소율(%)</label><input id="declineRate" type="number" value="1.8" step="0.1" />
+      <button onclick="analyze()">소멸위험도 분석하기</button>
+    </div>
+    <div class="result box" id="result">
+      분석 버튼을 누르면 결과가 표시됩니다.
+    </div>
+  </div>
+</section>
+<section id="chart" class="card">
+  <h2>4. 지난 30년 + 앞으로 10년 추세선</h2>
+  <canvas id="popChart" height="100"></canvas>
+  <p class="small">※ 실제 수업에서는 KOSIS 또는 주민등록인구통계 API에서 연도별 데이터를 받아 이 그래프에 연결합니다.</p>
+</section>
+<section id="policy" class="card">
+  <h2>5. 분석 결과에 따른 정책 제안</h2>
+  <div class="grid">
+    <div class="box"><h3>청년 정착 정책</h3><p>청년 주거비 지원, 지역 창업 공간, 원격근무 거점센터 조성</p></div>
+    <div class="box"><h3>교육·돌봄 정책</h3><p>소규모 학교 연계형 돌봄센터, 방과후 AI·SW 교육 확대</p></div>
+    <div class="box"><h3>생활 인프라 정책</h3><p>응급의료, 대중교통, 공공 와이파이, 문화시설 접근성 개선</p></div>
+    <div class="box"><h3>스마트 농촌 정책</h3><p>스마트팜, 지역 데이터센터, 농산물 온라인 유통 플랫폼 구축</p></div>
+  </div>
+  <h3>핵심 인사이트</h3>
+  <p><span class="tag">청년 유출</span><span class="tag">고령화 심화</span><span class="tag">출생률 감소</span><span class="tag">생활 인프라 축소</span></p>
+</section>
+<section id="code" class="card">
+  <h2>6. 파이썬 분석 예시 코드</h2>
+  <pre><code>import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# 예시 데이터: 실제 수업에서는 공공데이터 API 결과로 대체
+ years = list(range(1996, 2027))
+population = [42000,41000,39800,39000,38200,37500,36800,36000,35200,34500,
+              33800,33100,32500,31800,31200,30600,30000,29400,28800,28200,
+              27600,27100,26600,26200,25800,25500,25200,24900,24600,24300,24000]
+
+df = pd.DataFrame({'year': years, 'population': population})
+
+X = df[['year']]
+y = df['population']
+model = LinearRegression()
+model.fit(X, y)
+
+future_years = pd.DataFrame({'year': list(range(2027, 2037))})
+future_pred = model.predict(future_years)
+
+plt.rcParams['font.family'] = 'Malgun Gothic'
+plt.rcParams['axes.unicode_minus'] = False
+plt.plot(df['year'], df['population'], marker='o', label='실제 인구')
+plt.plot(future_years['year'], future_pred, marker='x', linestyle='--', label='예측 인구')
+plt.title('지역 인구 변화와 10년 후 예측')
+plt.xlabel('연도')
+plt.ylabel('인구')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# 소멸위험지수 = 20~39세 여성 인구 / 65세 이상 인구
+young_women = 2300
+old_people = 9800
+risk_index = young_women / old_people
+print('소멸위험지수:', round(risk_index, 3))</code></pre>
+</section>
+<footer>대한민국 소멸위험도 분석 앱 · 정보·데이터과학 프로젝트</footer>
+<script>
+let chart;
+function riskText(index){
+  if(index >= 1.5) return ['안정 지역','risk-low'];
+  if(index >= 1.0) return ['주의 지역','risk-mid'];
+  if(index >= 0.5) return ['소멸위험 진입 지역','risk-high'];
+  return ['고위험 소멸 지역','risk-extreme'];
+}
+function analyze(){
+  const region=document.getElementById('region').value;
+  const pop=Number(document.getElementById('population').value);
+  const yw=Number(document.getElementById('youngWomen').value);
+  const old=Number(document.getElementById('oldPeople').value);
+  const rate=Number(document.getElementById('declineRate').value)/100;
+  const index=yw/old;
+  const [label,cls]=riskText(index);
+  const future=Math.round(pop*Math.pow(1-rate,10));
+  const loss=pop-future;
+  document.getElementById('result').innerHTML=`
+    <h3>${region} 분석 결과</h3>
+    <p>소멸위험지수 = <b>${index.toFixed(3)}</b></p>
+    <p>위험 등급: <span class="${cls}">${label}</span></p>
+    <p>현재 인구: <b>${pop.toLocaleString()}명</b></p>
+    <p>10년 후 예측 인구: <b>${future.toLocaleString()}명</b></p>
+    <p>예상 감소 인구: <b>${loss.toLocaleString()}명</b></p>
+    <hr><p><b>해석:</b> 청년 여성 인구가 고령 인구에 비해 적을수록 지역의 자연 감소와 사회적 유출 위험이 커집니다.</p>`;
+  drawChart(pop, rate);
+}
+function drawChart(pop, rate){
+  const years=[], values=[];
+  for(let i=30;i>=1;i--){ years.push(2026-i); values.push(Math.round(pop*Math.pow(1+rate,i))); }
+  years.push(2026); values.push(pop);
+  for(let i=1;i<=10;i++){ years.push(2026+i); values.push(Math.round(pop*Math.pow(1-rate,i))); }
+  const ctx=document.getElementById('popChart');
+  if(chart) chart.destroy();
+  chart=new Chart(ctx,{type:'line',data:{labels:years,datasets:[{label:'인구 추세 및 예측',data:values,tension:.25,pointRadius:3}]},options:{responsive:true,plugins:{legend:{display:true}},scales:{y:{beginAtZero:false}}}});
+}
+analyze();
+</script>
+</body>
+</html>
