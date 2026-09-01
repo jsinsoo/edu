@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>괄호 검사 완전정복</title>
+<style>
+:root{
+  --bg:#f5f7fb; --card:#fff; --ink:#1f2937; --muted:#64748b;
+  --line:#dbe3ef; --accent:#2563eb; --good:#15803d; --bad:#b91c1c; --code:#0f172a;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+header{background:linear-gradient(135deg,#1d4ed8,#0f766e);color:white;padding:34px 20px}
+header .wrap, main{max-width:1180px;margin:auto}
+h1{margin:0 0 8px;font-size:2rem} h2{border-left:6px solid var(--accent);padding-left:12px;margin-top:38px}
+h3{margin-top:26px;color:#1e3a8a}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0;box-shadow:0 5px 18px rgba(15,23,42,.05)}
+.note{background:#eff6ff;border-left:5px solid #3b82f6;padding:14px 16px;border-radius:8px}
+.warn{background:#fff7ed;border-left:5px solid #f97316;padding:14px 16px;border-radius:8px}
+.good{color:var(--good);font-weight:700}.bad{color:var(--bad);font-weight:700}
+pre{background:var(--code);color:#e2e8f0;padding:16px;border-radius:10px;overflow:auto;line-height:1.5}
+code{font-family:Consolas,monospace}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th,td{border:1px solid #cbd5e1;padding:10px;vertical-align:top} th{background:#eaf0f8}
+input[type=text]{padding:9px;border:1px solid #94a3b8;border-radius:7px;min-width:190px}
+.student{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.q{border-top:1px dashed #cbd5e1;padding-top:18px;margin-top:18px}
+.option{display:block;margin:7px 0;padding:7px 9px;background:#f8fafc;border-radius:6px}
+button{border:0;border-radius:9px;padding:12px 18px;font-weight:700;cursor:pointer}
+.primary{background:#2563eb;color:#fff}.secondary{background:#475569;color:#fff}
+.result{margin-top:14px;padding:14px;border-radius:8px;background:#f1f5f9}
+.explain{display:none;margin-top:10px;background:#f8fafc;border:1px solid #dbeafe;padding:12px;border-radius:8px}
+.scorebox{font-size:1.25rem;font-weight:700}
+.small{font-size:.92rem;color:var(--muted)}
+nav{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:10;padding:8px 12px;overflow:auto;white-space:nowrap}
+nav a{display:inline-block;padding:7px 11px;color:#1e40af;text-decoration:none}
+@media(max-width:700px){h1{font-size:1.55rem}.card{padding:15px}th,td{font-size:.9rem;padding:7px}}
+@media print{nav,.no-print{display:none}body{background:white}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>파이썬 스택으로 배우는 괄호 검사 완전정복</h1>
+<div>기초 → 응용 → 심화 예제 + 자동채점 30문항 + 상세 해설 + 결과 TXT 저장</div>
+</div></header>
+<nav>
+<a href="#basic">기초</a><a href="#examples">예시 코드</a><a href="#advanced">응용·심화</a>
+<a href="#multi">5지선다 10</a><a href="#ox">OX 10</a><a href="#short">단답 10</a><a href="#grade">채점</a>
+</nav>
+<main>
+
+<section id="basic">
+<h2>1. 괄호 검사란?</h2>
+<div class="card">
+<p>괄호 검사는 여는 괄호와 닫는 괄호가 <b>종류와 순서에 맞게 짝을 이루는지</b> 확인하는 문제입니다. 대표적으로 <code>()</code>, <code>[]</code>, <code>{}</code>를 검사합니다.</p>
+<table>
+<tr><th>문자열</th><th>판정</th><th>이유</th></tr>
+<tr><td><code>{[()]}</code></td><td class="good">올바름</td><td>가장 나중에 연 괄호부터 먼저 닫힘</td></tr>
+<tr><td><code>([)]</code></td><td class="bad">잘못됨</td><td><code>[</code>를 연 뒤 <code>)</code>가 먼저 등장하여 종류 불일치</td></tr>
+<tr><td><code>((()))</code></td><td class="good">올바름</td><td>모든 여는 괄호가 역순으로 닫힘</td></tr>
+<tr><td><code>(()</code></td><td class="bad">잘못됨</td><td>검사 종료 후 여는 괄호가 스택에 남음</td></tr>
+<tr><td><code>())</code></td><td class="bad">잘못됨</td><td>스택이 빈 상태에서 닫는 괄호가 등장</td></tr>
+</table>
+<div class="note"><b>핵심:</b> 괄호는 LIFO(Last In, First Out), 즉 가장 나중에 들어온 것이 가장 먼저 나오는 <b>스택</b> 구조와 정확히 맞습니다.</div>
+</div>
+
+<h3>주어진 기본 코드 상세 설명</h3>
+<div class="card">
+<pre><code>def valid_brackets(text):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+
+    for ch in text:
+        if ch in "([{":
+            stack.append(ch)
+        elif ch in ")]}":
+            if not stack or stack.pop() != pair[ch]:
+                return False
+
+    return not stack</code></pre>
+<table>
+<tr><th>코드</th><th>의미</th></tr>
+<tr><td><code>stack = []</code></td><td>아직 닫히지 않은 여는 괄호를 저장할 스택</td></tr>
+<tr><td><code>pair = {...}</code></td><td>각 닫는 괄호에 대응하는 올바른 여는 괄호를 딕셔너리로 정의</td></tr>
+<tr><td><code>for ch in text</code></td><td>문자열을 왼쪽에서 오른쪽으로 한 문자씩 검사</td></tr>
+<tr><td><code>stack.append(ch)</code></td><td>여는 괄호를 만나면 스택의 맨 뒤에 삽입</td></tr>
+<tr><td><code>not stack</code></td><td>스택이 비어 있으면 True. 닫는 괄호가 너무 일찍 등장했는지 검사</td></tr>
+<tr><td><code>stack.pop()</code></td><td>가장 최근에 저장한 여는 괄호를 꺼냄</td></tr>
+<tr><td><code>pair[ch]</code></td><td>현재 닫는 괄호와 짝이어야 할 여는 괄호를 얻음</td></tr>
+<tr><td><code>return not stack</code></td><td>모든 검사가 끝난 후 스택까지 비어 있어야 올바른 문자열</td></tr>
+</table>
+</div>
+</section>
+
+<section id="examples">
+<h2>2. 기초부터 응용까지 예시 코드</h2>
+
+<div class="card"><h3>예제 1. 소괄호만 검사</h3>
+<pre><code>def check_parentheses(text):
+    count = 0
+
+    for ch in text:
+        if ch == "(":
+            count += 1
+        elif ch == ")":
+            count -= 1
+
+        if count &lt; 0:
+            return False
+
+    return count == 0
+
+print(check_parentheses("(())"))   # True
+print(check_parentheses("())("))   # False</code></pre>
+<p>한 종류의 괄호만 검사할 때는 정수 카운터도 사용할 수 있습니다. 단, 여러 종류의 괄호가 섞이면 종류와 중첩 순서를 기억해야 하므로 스택이 필요합니다.</p>
+</div>
+
+<div class="card"><h3>예제 2. 여러 종류의 괄호 검사</h3>
+<pre><code>def valid_brackets(text):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+
+    for ch in text:
+        if ch in "([{":
+            stack.append(ch)
+
+        elif ch in ")]}":
+            if not stack:
+                return False
+
+            if stack.pop() != pair[ch]:
+                return False
+
+    return not stack
+
+print(valid_brackets("{[()]}"))  # True
+print(valid_brackets("([)]"))    # False</code></pre>
+</div>
+
+<div class="card"><h3>예제 3. 검사 과정을 한 단계씩 출력</h3>
+<pre><code>def trace_brackets(text):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+
+    for i, ch in enumerate(text):
+        if ch in "([{":
+            stack.append(ch)
+            print(i, ch, "push ->", stack)
+
+        elif ch in ")]}":
+            if not stack:
+                print(i, ch, "오류: 대응할 여는 괄호 없음")
+                return False
+
+            top = stack.pop()
+            print(i, ch, "pop", top, "->", stack)
+
+            if top != pair[ch]:
+                print("오류: 괄호 종류 불일치")
+                return False
+
+    if stack:
+        print("오류: 닫히지 않은 괄호", stack)
+        return False
+
+    return True</code></pre>
+</div>
+
+<div class="card"><h3>예제 4. 일반 문자가 섞인 수식 검사</h3>
+<pre><code>def check_expression(expr):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+
+    for ch in expr:
+        if ch in "([{":
+            stack.append(ch)
+        elif ch in ")]}":
+            if not stack or stack.pop() != pair[ch]:
+                return False
+
+    return not stack
+
+print(check_expression("a * (b + c[2])"))       # True
+print(check_expression("func(a[2} + b)"))        # False</code></pre>
+<p>괄호가 아닌 문자는 아무 동작 없이 건너뜁니다.</p>
+</div>
+
+<div class="card"><h3>예제 5. 오류 위치와 이유 반환</h3>
+<pre><code>def check_with_reason(text):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+
+    for i, ch in enumerate(text):
+        if ch in "([{":
+            stack.append((ch, i))
+
+        elif ch in ")]}":
+            if not stack:
+                return False, f"{i}번 위치: 여는 괄호가 없습니다."
+
+            open_ch, open_i = stack.pop()
+
+            if open_ch != pair[ch]:
+                return False, (
+                    f"{i}번 위치: {open_ch}와 {ch}는 짝이 아닙니다."
+                )
+
+    if stack:
+        ch, i = stack[-1]
+        return False, f"{i}번 위치의 {ch}가 닫히지 않았습니다."
+
+    return True, "모든 괄호가 올바르게 짝지어졌습니다."</code></pre>
+</div>
+
+<div class="card"><h3>예제 6. 괄호의 최대 중첩 깊이 구하기</h3>
+<pre><code>def max_depth(text):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+    maximum = 0
+
+    for ch in text:
+        if ch in "([{":
+            stack.append(ch)
+            maximum = max(maximum, len(stack))
+
+        elif ch in ")]}":
+            if not stack or stack.pop() != pair[ch]:
+                return -1
+
+    if stack:
+        return -1
+
+    return maximum
+
+print(max_depth("{[()]}"))   # 3</code></pre>
+<p>정상 문자열이면 최대 스택 크기가 곧 최대 괄호 중첩 깊이입니다.</p>
+</div>
+</section>
+
+<section id="advanced">
+<h2>3. 응용·심화 개념</h2>
+<div class="card">
+<h3>시간 복잡도와 공간 복잡도</h3>
+<p>문자열 길이를 <code>n</code>이라 하면 각 문자를 한 번씩 확인하므로 시간 복잡도는 <b>O(n)</b>입니다. 최악의 경우 문자열 전체가 여는 괄호일 수 있으므로 스택 공간은 <b>O(n)</b>까지 필요합니다.</p>
+<h3>왜 단순 개수 비교만으로는 부족한가?</h3>
+<p><code>([)]</code>는 소괄호와 대괄호의 개수는 각각 맞지만 순서가 틀렸습니다. 따라서 여러 종류를 검사하려면 개수뿐 아니라 <b>가장 최근의 여는 괄호 종류</b>를 기억해야 합니다.</p>
+<h3>스택 불변식</h3>
+<p>문자열의 앞부분을 어느 지점까지 처리했을 때 스택에는 정확히 <b>아직 닫히지 않은 여는 괄호들</b>이 등장 순서대로 들어 있습니다. 이 성질이 알고리즘의 정확성을 설명하는 핵심입니다.</p>
+</div>
+
+<div class="card"><h3>심화 1. 사용자 정의 괄호 추가</h3>
+<pre><code>def valid_custom(text):
+    stack = []
+    pair = {
+        ")": "(",
+        "]": "[",
+        "}": "{",
+        "&gt;": "&lt;"
+    }
+    opens = set(pair.values())
+
+    for ch in text:
+        if ch in opens:
+            stack.append(ch)
+        elif ch in pair:
+            if not stack or stack.pop() != pair[ch]:
+                return False
+
+    return not stack</code></pre>
+</div>
+
+<div class="card"><h3>심화 2. 모든 오류를 한꺼번에 찾는 방식의 한계</h3>
+<p>첫 번째 짝 불일치 이후에는 어느 괄호를 기준으로 계속 검사할지 모호해질 수 있습니다. 따라서 문법 검사기는 보통 첫 오류를 보고하거나, 오류 복구 규칙을 별도로 설계합니다.</p>
+</div>
+
+<div class="card"><h3>심화 3. 문자열 리터럴 속 괄호 무시하기</h3>
+<pre><code>def check_code_line(text):
+    stack = []
+    pair = {")": "(", "]": "[", "}": "{"}
+    quote = None
+
+    for ch in text:
+        if ch in "'\"":
+            if quote is None:
+                quote = ch
+            elif quote == ch:
+                quote = None
+            continue
+
+        if quote is not None:
+            continue
+
+        if ch in "([{":
+            stack.append(ch)
+        elif ch in ")]}":
+            if not stack or stack.pop() != pair[ch]:
+                return False
+
+    return not stack and quote is None</code></pre>
+<div class="warn">실제 Python 소스 전체를 정확하게 분석하려면 이 단순 예제보다 복잡합니다. 이스케이프 문자, 삼중 따옴표, 주석 등을 함께 처리해야 하므로 실제 컴파일러·파서는 토큰화 단계를 사용합니다.</div>
+</div>
+</section>
+
+<section id="multi">
+<h2>4. 5지선다형 10문항 — 옳은 것 3개 고르기</h2>
+<div class="card">
+<p class="small">각 문항에서 반드시 3개를 선택하세요. 문항당 4점, 총 40점.</p>
+<div id="multiQs"></div>
+</div>
+</section>
+
+<section id="ox">
+<h2>5. 개념·코드 OX 퀴즈 10문항</h2>
+<div class="card">
+<p class="small">문항당 3점, 총 30점.</p>
+<div id="oxQs"></div>
+</div>
+</section>
+
+<section id="short">
+<h2>6. 답이 분명한 단답형 10문항</h2>
+<div class="card">
+<p class="small">문항당 3점, 총 30점. 영문은 대소문자를 구분하지 않습니다.</p>
+<div id="shortQs"></div>
+</div>
+</section>
+
+<section id="grade">
+<h2>7. 채점 및 결과 저장</h2>
+<div class="card">
+<div class="student">
+<label>학번 <input id="sid" type="text" placeholder="예: 1101"></label>
+<label>이름 <input id="sname" type="text" placeholder="이름"></label>
+</div>
+<p><button class="primary no-print" onclick="gradeAll()">채점하기</button>
+<button class="secondary no-print" onclick="downloadResult()">TXT 저장</button></p>
+<div id="score" class="result scorebox">아직 채점하지 않았습니다.</div>
+<div id="summary" class="result"></div>
+</div>
+</section>
+</main>
+
+<script>
+const multi = [
+{
+q:"스택을 이용한 괄호 검사에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["여는 괄호는 스택에 저장할 수 있다.","닫는 괄호가 나오면 가장 최근의 여는 괄호와 비교한다.","검사가 끝난 뒤 스택이 비어 있어야 정상이다.","닫는 괄호는 종류와 무관하게 무조건 pop만 하면 된다.","여러 종류의 괄호도 단순히 전체 개수만 같으면 정상이다."],
+a:[0,1,2],
+e:"여는 괄호를 push하고, 닫는 괄호에서 top과 종류를 비교하며, 마지막에 스택이 비어야 합니다. 종류를 무시하거나 개수만 비교하면 ([)] 같은 오류를 잡지 못합니다."
+},
+{
+q:"다음 코드의 표현들에 대한 설명으로 옳은 것을 3개 고르시오: if not stack or stack.pop() != pair[ch]:",
+o:["not stack은 스택이 비었는지 검사한다.","or의 단락 평가 때문에 stack이 비면 pop()은 실행되지 않는다.","pair[ch]는 닫는 괄호 ch에 맞는 여는 괄호를 준다.","stack.pop()은 리스트의 맨 앞 원소를 제거한다.","stack이 비어 있어도 pop()이 항상 먼저 실행된다."],
+a:[0,1,2],
+e:"Python의 or는 왼쪽이 True이면 오른쪽을 평가하지 않습니다. 따라서 빈 스택에서 pop 오류가 발생하지 않습니다. list.pop()의 기본 위치는 맨 뒤입니다."
+},
+{
+q:"문자열 ([)]에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["여는 괄호의 개수와 닫는 괄호의 개수는 같다.","단순 괄호 개수 검사만 하면 오류를 놓칠 수 있다.","')'를 만났을 때 스택 top은 '['이다.","올바른 괄호 문자열이다.","스택을 사용해도 오류를 검출할 수 없다."],
+a:[0,1,2],
+e:"([)]는 개수는 맞지만 중첩 순서가 틀립니다. ')' 시점의 top은 '['이므로 '('와 일치하지 않아 오류입니다."
+},
+{
+q:"함수의 마지막 문장 return not stack에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["스택이 비어 있으면 True를 반환한다.","남은 여는 괄호가 있으면 False를 반환한다.","예를 들어 '(()'는 마지막에 False가 된다.","항상 True를 반환하는 문장이다.","닫는 괄호의 종류를 직접 검사하는 문장이다."],
+a:[0,1,2],
+e:"빈 리스트는 False로 평가되므로 not []는 True입니다. 남은 원소가 있으면 not stack은 False입니다."
+},
+{
+q:"괄호 검사 알고리즘의 복잡도에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["길이 n 문자열을 한 번 순회하면 시간 복잡도는 O(n)이다.","최악의 경우 스택에 O(n)개의 괄호가 들어갈 수 있다.","따라서 보조 공간의 최악 복잡도는 O(n)이다.","항상 시간 복잡도는 O(n²)이다.","스택은 어떤 입력에서도 최대 한 원소만 저장한다."],
+a:[0,1,2],
+e:"각 문자를 한 번 확인하므로 O(n), 모두 여는 괄호인 입력에서는 n개가 스택에 저장될 수 있어 O(n) 공간입니다."
+},
+{
+q:"다음 입력 중 정상 괄호 문자열에 관한 설명으로 옳은 것을 3개 고르시오.",
+o:["'{[()]}'는 정상이다.","'()[]{}'는 정상이다.","빈 문자열 ''도 괄호 불일치가 없으므로 정상으로 볼 수 있다.","'([)'는 정상이다.","'}{'는 정상이다."],
+a:[0,1,2],
+e:"중첩형과 나열형 모두 정상이며, 빈 문자열은 위 알고리즘에서 빈 스택 상태로 종료되어 True입니다."
+},
+{
+q:"오류 위치를 함께 찾는 개선 코드에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["enumerate(text)를 쓰면 문자와 인덱스를 함께 얻을 수 있다.","스택에 (괄호, 위치) 튜플을 저장할 수 있다.","검사 후 스택이 남으면 닫히지 않은 여는 괄호 위치를 보고할 수 있다.","위치를 알려면 반드시 재귀함수를 써야 한다.","딕셔너리는 오류 위치 추적에 사용할 수 없다."],
+a:[0,1,2],
+e:"enumerate와 튜플 저장만으로 위치 추적이 가능합니다. 재귀는 필요하지 않습니다."
+},
+{
+q:"일반 문자가 섞인 수식 a*(b+c[2]) 검사에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["a, *, b, +, c, 2 같은 문자는 무시해도 괄호 검사에는 문제없다.","'('와 '['는 스택에 들어간다.","]'와 ')'는 대응하는 여는 괄호와 비교된다.","모든 일반 문자도 반드시 스택에 저장해야 한다.","숫자가 포함되면 괄호 검사를 할 수 없다."],
+a:[0,1,2],
+e:"목표가 괄호 균형 검사라면 괄호가 아닌 문자는 건너뛰면 됩니다."
+},
+{
+q:"한 종류의 소괄호만 검사하는 count 방식에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["'('에서 count를 1 증가시킬 수 있다.","')'에서 count를 1 감소시킬 수 있다.","중간에 count가 음수가 되면 닫는 괄호가 먼저 나온 것이다.","(), [], {}를 섞어도 count 하나만으로 종류까지 완벽히 검사한다.","최종 count만 0이면 중간 순서는 전혀 검사할 필요가 없다."],
+a:[0,1,2],
+e:"한 종류에서는 카운터 방식이 가능합니다. 하지만 여러 종류의 괄호 순서는 count 하나로 구분할 수 없습니다."
+},
+{
+q:"최대 중첩 깊이를 구하는 코드에 대한 설명으로 옳은 것을 3개 고르시오.",
+o:["여는 괄호를 push한 직후 len(stack)을 확인할 수 있다.","정상 입력에서 스택의 최대 길이는 최대 중첩 깊이와 같다.","'{[()]}'의 최대 중첩 깊이는 3이다.","'()()()'의 최대 중첩 깊이는 3이다.","괄호가 틀려도 반드시 의미 있는 최대 깊이를 반환해야 한다."],
+a:[0,1,2],
+e:"{[()]}는 세 겹 중첩입니다. ()()()는 연속 나열이라 최대 깊이는 1입니다. 오류 입력은 -1 같은 별도 값으로 처리할 수 있습니다."
+}
+];
+
+const ox = [
+["스택은 LIFO 구조이므로 괄호의 중첩 순서를 검사하기에 적합하다.","O","가장 나중에 열린 괄호가 가장 먼저 닫혀야 하므로 LIFO와 일치합니다."],
+["([)]는 각 종류의 여는 괄호와 닫는 괄호 개수가 같으므로 올바른 괄호 문자열이다.","X","개수는 같지만 중첩 순서가 틀립니다."],
+["빈 리스트 []에 대해 bool([])의 값은 False이다.","O","빈 컨테이너는 Python에서 거짓으로 평가됩니다."],
+["list.pop()에 인덱스를 생략하면 리스트의 맨 앞 원소가 제거된다.","X","인덱스를 생략하면 맨 뒤 원소가 제거됩니다."],
+["if not stack or stack.pop() != pair[ch]: 에서 stack이 비면 pop()은 실행되지 않는다.","O","or의 단락 평가 때문에 오른쪽 식을 평가하지 않습니다."],
+["모든 여는 괄호를 스택에 넣기만 하면 마지막 스택 상태와 상관없이 정상이다.","X","종료 후 여는 괄호가 남아 있으면 닫히지 않은 괄호가 있다는 뜻입니다."],
+["괄호 검사에서 일반 문자와 숫자를 반드시 모두 스택에 저장해야 한다.","X","괄호 균형만 검사한다면 괄호가 아닌 문자는 무시할 수 있습니다."],
+["길이 n인 문자열을 한 번 순회하는 기본 괄호 검사의 시간 복잡도는 O(n)이다.","O","각 문자를 최대 한 번 처리합니다."],
+["'{[()]}'를 처리할 때 스택의 최대 크기는 3이다.","O","{, [, (가 순서대로 들어간 순간 크기가 3입니다."],
+["괄호 종류가 하나뿐인 경우에는 스택 대신 카운터를 이용한 검사도 가능하다.","O","단, 중간 count가 음수가 되는지도 검사해야 합니다."]
+];
+
+const shorts = [
+["리스트의 맨 뒤 원소를 제거하여 반환하는 메서드 이름은?","pop","정답은 pop입니다. 괄호 검사에서는 가장 최근 여는 괄호를 꺼낼 때 사용합니다."],
+["리스트의 맨 뒤에 원소를 추가하는 메서드 이름은?","append","정답은 append입니다."],
+["스택의 대표적인 자료 처리 원리를 영문 약자로 쓰시오.","lifo","LIFO = Last In, First Out입니다."],
+["'{[()]}'의 최대 괄호 중첩 깊이는?","3","{ → [ → ( 순으로 세 개가 동시에 열립니다."],
+["'()()()'의 최대 괄호 중첩 깊이는?","1","괄호가 차례로 닫힌 뒤 다음 괄호가 열리므로 최대 한 겹입니다."],
+["길이 n 문자열을 한 번 순회하는 기본 괄호 검사의 시간 복잡도를 빅오 표기법으로 쓰시오.","o(n)","각 문자를 한 번 처리하므로 O(n)입니다."],
+["Python에서 빈 리스트의 불리언 값은 True/False 중 무엇인가?","false","빈 리스트는 False로 평가됩니다."],
+["')'에 대응하는 여는 괄호를 쓰시오.","(","소괄호의 짝은 ( 와 ) 입니다."],
+["']'에 대응하는 여는 괄호를 쓰시오.","[","대괄호의 짝은 [ 와 ] 입니다."],
+["'}'에 대응하는 여는 괄호를 쓰시오.","{","중괄호의 짝은 { 와 } 입니다."]
+];
+
+function render(){
+ let h="";
+ multi.forEach((x,i)=>{
+   h+=`<div class="q" id="m${i}"><b>${i+1}. ${x.q}</b>`;
+   x.o.forEach((op,j)=>h+=`<label class="option"><input type="checkbox" name="m${i}" value="${j}"> ${j+1}) ${op}</label>`);
+   h+=`<div class="explain" id="me${i}"></div></div>`;
+ });
+ document.getElementById("multiQs").innerHTML=h;
+
+ h="";
+ ox.forEach((x,i)=>{
+  h+=`<div class="q"><b>${i+1}. ${x[0]}</b>
+  <label class="option"><input type="radio" name="o${i}" value="O"> O</label>
+  <label class="option"><input type="radio" name="o${i}" value="X"> X</label>
+  <div class="explain" id="oe${i}"></div></div>`;
+ });
+ document.getElementById("oxQs").innerHTML=h;
+
+ h="";
+ shorts.forEach((x,i)=>{
+   h+=`<div class="q"><b>${i+1}. ${x[0]}</b><br>
+   <input type="text" id="s${i}" autocomplete="off">
+   <div class="explain" id="se${i}"></div></div>`;
+ });
+ document.getElementById("shortQs").innerHTML=h;
+}
+render();
+
+let lastText="";
+
+function sameSet(a,b){
+ a=[...a].map(Number).sort((x,y)=>x-y);
+ b=[...b].map(Number).sort((x,y)=>x-y);
+ return a.length===b.length && a.every((v,i)=>v===b[i]);
+}
+function norm(s){return (s??"").trim().toLowerCase().replace(/\s+/g,"");}
+
+function gradeAll(){
+ const sid=document.getElementById("sid").value.trim();
+ const name=document.getElementById("sname").value.trim();
+ if(!sid || !name){alert("학번과 이름을 입력하세요.");return;}
+
+ let score=0, correct=0;
+ let lines=[];
+ lines.push("괄호검사 평가 결과");
+ lines.push("학번: "+sid);
+ lines.push("이름: "+name);
+ lines.push("");
+
+ multi.forEach((x,i)=>{
+   const chosen=[...document.querySelectorAll(`input[name=m${i}]:checked`)].map(e=>+e.value);
+   const ok=sameSet(chosen,x.a);
+   if(ok){score+=4;correct++;}
+   const ans=x.a.map(v=>v+1).join(", ");
+   const resp=chosen.length?chosen.map(v=>v+1).join(", "):"미응답";
+   let el=document.getElementById("me"+i); el.style.display="block";
+   el.innerHTML=`<b class="${ok?'good':'bad'}">${ok?'정답':'오답'}</b> · 정답: ${ans}<br>${x.e}`;
+   lines.push(`[5지선다 ${i+1}] ${ok?'정답':'오답'} / 응답: ${resp} / 정답: ${ans}`);
+   lines.push("해설: "+x.e);
+ });
+
+ ox.forEach((x,i)=>{
+   const r=document.querySelector(`input[name=o${i}]:checked`);
+   const resp=r?r.value:"미응답"; const ok=resp===x[1];
+   if(ok){score+=3;correct++;}
+   let el=document.getElementById("oe"+i);el.style.display="block";
+   el.innerHTML=`<b class="${ok?'good':'bad'}">${ok?'정답':'오답'}</b> · 정답: ${x[1]}<br>${x[2]}`;
+   lines.push(`[OX ${i+1}] ${ok?'정답':'오답'} / 응답: ${resp} / 정답: ${x[1]}`);
+   lines.push("해설: "+x[2]);
+ });
+
+ shorts.forEach((x,i)=>{
+   const resp=document.getElementById("s"+i).value;
+   const ok=norm(resp)===norm(x[1]);
+   if(ok){score+=3;correct++;}
+   let el=document.getElementById("se"+i);el.style.display="block";
+   el.innerHTML=`<b class="${ok?'good':'bad'}">${ok?'정답':'오답'}</b> · 정답: <code>${x[1]}</code><br>${x[2]}`;
+   lines.push(`[단답 ${i+1}] ${ok?'정답':'오답'} / 응답: ${resp||'미응답'} / 정답: ${x[1]}`);
+   lines.push("해설: "+x[2]);
+ });
+
+ const now=new Date();
+ const stamp=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+" "+
+ String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")+":"+String(now.getSeconds()).padStart(2,"0");
+
+ document.getElementById("score").innerHTML=`점수: <span class="${score>=60?'good':'bad'}">${score} / 100점</span> · 정답 ${correct} / 30문항`;
+ document.getElementById("summary").innerHTML=`응시시각: ${stamp}<br>아래의 <b>TXT 저장</b> 버튼을 누르면 각 문항 정오답과 상세 해설이 포함된 결과 파일을 저장합니다.`;
+
+ lines.splice(3,0,"점수: "+score+" / 100","정답 문항 수: "+correct+" / 30","응시시각: "+stamp,"");
+ lastText=lines.join("\n");
+}
+
+function safeName(s){return s.replace(/[\\/:*?"<>|]/g,"_").replace(/\s+/g,"_");}
+function downloadResult(){
+ if(!lastText){alert("먼저 채점하기를 누르세요.");return;}
+ const sid=safeName(document.getElementById("sid").value.trim());
+ const name=safeName(document.getElementById("sname").value.trim());
+ const scoreText=document.getElementById("score").innerText.match(/\d+\s*\/\s*100/);
+ const score=scoreText?scoreText[0].split("/")[0].trim():"0";
+ const d=new Date();
+ const stamp=d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"_"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+String(d.getSeconds()).padStart(2,"0");
+ const filename=`${sid}_${name}_${score}_괄호검사_${stamp}.txt`;
+ const blob=new Blob(["\ufeff"+lastText],{type:"text/plain;charset=utf-8"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob); a.download=filename;
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+</script>
+</body>
+</html>
